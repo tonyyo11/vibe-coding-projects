@@ -1,0 +1,589 @@
+JAMF HEALTH TOOL - COMMAND REFERENCE
+=====================================
+Version 3.0 - All 16 Production Commands
+
+Generated: $(date)
+
+This document shows all available commands with their options.
+Perfect for reference and demonstrating capabilities to your team.
+
+=====================================
+
+
+======================================
+COMMAND: patch-compliance
+======================================
+
+                                                                                
+ Usage: jamf-health-tool patch-compliance [OPTIONS]                             
+                                                                                
+ Check patch compliance for macOS versions and applications.                    
+                                                                                
+ Date formats accepted: 2024-11-22, 11-22-2024, 11/22/2024, or ISO8601          
+ (2024-11-22T00:00:00Z)                                                         
+                                                                                
+╭─ Options ────────────────────────────────────────────────────────────────────╮
+│ --os-version                    TEXT     Target macOS versions (e.g.,        │
+│                                          '14.7.1,15.1')                      │
+│ --app                           TEXT     Application name:min_version OR     │
+│                                          just name to auto-fetch (e.g.,      │
+│                                          'Google Chrome:131.0' or 'Google    │
+│                                          Chrome')                            │
+│ --limiting-group-id             INTEGER  Limit to a specific group.          │
+│ --cr-start                      TEXT     CR start time (flexible date        │
+│                                          format: 2024-11-22 or 11-22-2024 or │
+│                                          ISO8601); mark devices offline      │
+│                                          since this time.                    │
+│ --output-json,--json-out        PATH     Write command output to JSON file.  │
+│ --help                                   Show this message and exit.         │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+
+
+======================================
+COMMAND: device-availability
+======================================
+
+                                                                                
+ Usage: jamf-health-tool device-availability [OPTIONS]                          
+                                                                                
+ Analyze device availability during a CR window based on check-in patterns.     
+                                                                                
+ Date formats accepted: 2024-11-22, 11-22-2024, 11/22/2024, or ISO8601          
+ (2024-11-22T00:00:00Z)                                                         
+                                                                                
+╭─ Options ────────────────────────────────────────────────────────────────────╮
+│ *  --cr-start                      TEXT     CR window start time (flexible   │
+│                                             date format: 2024-11-22 or       │
+│                                             11-22-2024 or ISO8601)           │
+│                                             [required]                       │
+│ *  --cr-end                        TEXT     CR window end time (flexible     │
+│                                             date format: 2024-11-22 or       │
+│                                             11-22-2024 or ISO8601)           │
+│                                             [required]                       │
+│    --scope-group-id                INTEGER  Limit to specific group.         │
+│    --min-checkin-count             INTEGER  Minimum check-ins required       │
+│                                             during window.                   │
+│                                             [default: 1]                     │
+│    --output-json,--json-out        PATH     Write command output to JSON     │
+│                                             file.                            │
+│    --output-xlsx                   PATH     Write command output to Excel    │
+│                                             (.xlsx) file.                    │
+│    --output-pdf                    PATH     Write command output to PDF      │
+│                                             file.                            │
+│    --output-html                   PATH     Write command output to HTML     │
+│                                             file.                            │
+│    --help                                   Show this message and exit.      │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+
+
+======================================
+COMMAND: cr-summary
+======================================
+
+                                                                                
+ Usage: jamf-health-tool cr-summary [OPTIONS]                                   
+                                                                                
+ Generate comprehensive CR summary combining policy execution, patch            
+ compliance, and device availability.                                           
+                                                                                
+ Date formats accepted: 2024-11-22, 11-22-2024, 11/22/2024, or ISO8601          
+ (2024-11-22T00:00:00Z)                                                         
+                                                                                
+╭─ Options ────────────────────────────────────────────────────────────────────╮
+│ *  --cr-name                       TEXT     Human-readable name for CR       │
+│                                             (e.g., 'November 2024 Patching') │
+│                                             [required]                       │
+│ *  --cr-start                      TEXT     CR window start time (flexible   │
+│                                             date format: 2024-11-22 or       │
+│                                             11-22-2024 or ISO8601)           │
+│                                             [required]                       │
+│ *  --cr-end                        TEXT     CR window end time (flexible     │
+│                                             date format: 2024-11-22 or       │
+│                                             11-22-2024 or ISO8601)           │
+│                                             [required]                       │
+│    --policy-id                     INTEGER  Policy IDs that were executed    │
+│                                             during CR                        │
+│    --target-os-version             TEXT     Target macOS versions            │
+│    --target-app                    TEXT     Target app as 'Name:MinVersion'  │
+│    --scope-group-id                INTEGER  Limit to specific group.         │
+│    --success-threshold             FLOAT    Success rate required (0.0-1.0)  │
+│                                             [default: 0.95]                  │
+│    --output-json,--json-out        PATH     Write command output to JSON     │
+│                                             file.                            │
+│    --help                                   Show this message and exit.      │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+
+
+======================================
+COMMAND: policy-failures
+======================================
+
+                                                                                
+ Usage: jamf-health-tool policy-failures [OPTIONS]                              
+                                                                                
+ Detect failed executions for given policies across scoped computers.           
+                                                                                
+ Date formats accepted: 2024-11-22, 11-22-2024, 11/22/2024, or ISO8601          
+ (2024-11-22T00:00:00Z)                                                         
+                                                                                
+╭─ Options ────────────────────────────────────────────────────────────────────╮
+│ --policy-id                     INTEGER  Policy ID to inspect.               │
+│ --policy-ids-file               PATH     File with policy IDs, one per line. │
+│ --limiting-group-id             INTEGER  Limit 'all computers' scope to a    │
+│                                          specific group.                     │
+│ --cr-start                      TEXT     CR start time (flexible date        │
+│                                          format: 2024-11-22 or 11-22-2024 or │
+│                                          ISO8601); classify devices offline  │
+│                                          since this time.                    │
+│ --output-json,--json-out        PATH     Write command output to JSON file.  │
+│ --help                                   Show this message and exit.         │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+
+
+======================================
+COMMAND: mdm-failures
+======================================
+
+Usage: jamf-health-tool [OPTIONS] COMMAND [ARGS]...
+Try 'jamf-health-tool --help' for help.
+╭─ Error ──────────────────────────────────────────────────────────────────────╮
+│ No such command 'mdm-failures'. Did you mean 'mdm-failures-report',          │
+│ 'policy-failures'?                                                           │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+
+======================================
+COMMAND: profile-audit
+======================================
+
+Usage: jamf-health-tool [OPTIONS] COMMAND [ARGS]...
+Try 'jamf-health-tool --help' for help.
+╭─ Error ──────────────────────────────────────────────────────────────────────╮
+│ No such command 'profile-audit'. Did you mean 'profile-scope-audit'?         │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+
+======================================
+COMMAND: cr-readiness
+======================================
+
+                                                                                
+ Usage: jamf-health-tool cr-readiness [OPTIONS]                                 
+                                                                                
+ Pre-flight readiness check before a Change Request window.                     
+                                                                                
+ This command analyzes device health and readiness, checking: - Last check-in   
+ time (devices must be online) - Disk space availability - Battery level (for   
+ laptops) - Pending MDM commands                                                
+ Use this BEFORE your CR window to identify and address issues proactively.     
+ Examples:     # Check readiness for all devices     jamf-health-tool           
+ cr-readiness                                                                   
+ # Check readiness for specific group with custom thresholds                    
+ jamf-health-tool cr-readiness --scope-group-id 100 --min-check-in-hours 12     
+ --min-disk-space 15                                                            
+ # Check readiness and export results     jamf-health-tool cr-readiness         
+ --output-json readiness.json                                                   
+                                                                                
+╭─ Options ────────────────────────────────────────────────────────────────────╮
+│ --scope-group-id                INTEGER  Limit to specific group.            │
+│ --min-check-in-hours            INTEGER  Devices must have checked in within │
+│                                          this many hours.                    │
+│                                          [default: 24]                       │
+│ --min-disk-space                FLOAT    Minimum free disk space in GB.      │
+│                                          [default: 10.0]                     │
+│ --min-battery                   INTEGER  Minimum battery level for laptops   │
+│                                          (percent).                          │
+│                                          [default: 20]                       │
+│ --output-json,--json-out        PATH     Write command output to JSON file.  │
+│ --help                                   Show this message and exit.         │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+
+
+======================================
+COMMAND: wake-devices
+======================================
+
+                                                                                
+ Usage: jamf-health-tool wake-devices [OPTIONS]                                 
+                                                                                
+ Send blank push notifications to wake devices for check-in.                    
+                                                                                
+ This command sends a BlankPush MDM command to devices, which wakes them up and 
+ causes them to process any pending MDM commands or policy executions.          
+ Use cases: - Wake offline devices during CR window - Trigger immediate         
+ check-in after profile/policy changes - Speed up deployment by not waiting for 
+ natural check-in                                                               
+ Examples:     # Wake specific devices     jamf-health-tool wake-devices        
+ --computer-id 123 --computer-id 456                                            
+ # Wake all devices in a list     jamf-health-tool wake-devices --computer-list 
+ offline_devices.txt                                                            
+ # Preview wake operation     jamf-health-tool wake-devices --computer-list     
+ devices.txt --dry-run                                                          
+                                                                                
+╭─ Options ────────────────────────────────────────────────────────────────────╮
+│ --computer-id          INTEGER  Computer ID(s) to wake (repeatable).         │
+│ --computer-list        PATH     File containing computer                     │
+│                                 IDs/serials/hostnames.                       │
+│ --dry-run                       Show what would be done without making       │
+│                                 changes.                                     │
+│ --help                          Show this message and exit.                  │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+
+
+======================================
+COMMAND: update-inventory
+======================================
+
+                                                                                
+ Usage: jamf-health-tool update-inventory [OPTIONS]                             
+                                                                                
+ Send inventory update commands to force devices to submit fresh inventory      
+ data.                                                                          
+                                                                                
+ This command sends an UpdateInventory MDM command to devices, which causes     
+ them to collect and submit current inventory information to Jamf Pro.          
+ Use cases: - Get latest application versions before compliance checks - Update 
+ hardware inventory after upgrades - Refresh inventory after major system       
+ changes                                                                        
+ Examples:     # Update inventory for specific devices     jamf-health-tool     
+ update-inventory --computer-id 123 --computer-id 456                           
+ # Update inventory for all devices in a list     jamf-health-tool              
+ update-inventory --computer-list devices.txt                                   
+                                                                                
+╭─ Options ────────────────────────────────────────────────────────────────────╮
+│ --computer-id          INTEGER  Computer ID(s) to update (repeatable).       │
+│ --computer-list        PATH     File containing computer                     │
+│                                 IDs/serials/hostnames.                       │
+│ --dry-run                       Show what would be done without making       │
+│                                 changes.                                     │
+│ --help                          Show this message and exit.                  │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+
+
+======================================
+COMMAND: restart-devices
+======================================
+
+                                                                                
+ Usage: jamf-health-tool restart-devices [OPTIONS]                              
+                                                                                
+ Send restart commands to devices.                                              
+                                                                                
+ ⚠️  WARNING: This command will RESTART devices immediately!                     
+ This command sends a RestartDevice MDM command which causes an immediate       
+ restart. Users will lose unsaved work.                                         
+ Safety features: - Requires explicit --confirm flag - Dry-run mode to preview  
+ - Interactive confirmation if --confirm not provided                           
+ Use cases: - Apply system updates that require restart - Clear system issues   
+ requiring reboot - Scheduled maintenance windows                               
+ Examples:     # Preview restart (safe)     jamf-health-tool restart-devices    
+ --computer-id 123 --dry-run                                                    
+ # Restart specific devices (will prompt for confirmation)     jamf-health-tool 
+ restart-devices --computer-id 123 --computer-id 456                            
+ # Restart without prompt (use in scripts)     jamf-health-tool restart-devices 
+ --computer-list devices.txt --confirm                                          
+                                                                                
+╭─ Options ────────────────────────────────────────────────────────────────────╮
+│ --computer-id          INTEGER  Computer ID(s) to restart (repeatable).      │
+│ --computer-list        PATH     File containing computer                     │
+│                                 IDs/serials/hostnames.                       │
+│ --confirm                       Confirm restart without interactive prompt.  │
+│ --delay-minutes        INTEGER  Delay before restart (0-60 minutes). NOT     │
+│                                 IMPLEMENTED - immediate restart only.        │
+│                                 [default: 0]                                 │
+│ --dry-run                       Show what would be done without making       │
+│                                 changes.                                     │
+│ --help                          Show this message and exit.                  │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+
+
+======================================
+COMMAND: remediate-policies
+======================================
+
+                                                                                
+ Usage: jamf-health-tool remediate-policies [OPTIONS]                           
+                                                                                
+ Remediate failed or stuck policies by flushing policy logs for individual      
+ computers.                                                                     
+                                                                                
+ This command flushes policy execution history on SPECIFIC COMPUTERS ONLY, not  
+ the entire policy. This is safe for "once per computer" policies and prevents  
+ accidentally forcing all scoped computers to re-run the policy.                
+ This command: 1. Flushes policy logs for the specified computers and policies  
+ 2. Optionally sends a blank push to wake devices 3. The policy will run again  
+ on next check-in (if still in scope)                                           
+ Safety features: - Dry-run mode to preview actions - Only flushes logs for     
+ specified computers (not entire policy) - Requires explicit policy and         
+ computer IDs - Logs all actions for audit trail                                
+ Examples:     # Preview flushing policy logs for specific computers            
+ jamf-health-tool remediate-policies --policy-id 10 --computer-id 123           
+ --computer-id 456 --dry-run                                                    
+ # Flush policy logs and send blank push     jamf-health-tool                   
+ remediate-policies --policy-id 10 --computer-list computers.txt                
+ --send-blank-push                                                              
+ # Remediate multiple policies on specific computers     jamf-health-tool       
+ remediate-policies --policy-id 10 --policy-id 20 --computer-id 123             
+                                                                                
+╭─ Options ────────────────────────────────────────────────────────────────────╮
+│ *  --policy-id                                 INTEGER  Policy ID(s) to      │
+│                                                         remediate            │
+│                                                         (repeatable).        │
+│                                                         [required]           │
+│    --computer-id                               INTEGER  Computer ID(s) to    │
+│                                                         remediate            │
+│                                                         (repeatable).        │
+│    --computer-list                             PATH     File containing      │
+│                                                         computer             │
+│                                                         IDs/serials/hostnam… │
+│    --dry-run                                            Show what would be   │
+│                                                         done without making  │
+│                                                         changes.             │
+│    --send-blank-push    --no-send-blank-pu…             Send blank push      │
+│                                                         after flushing to    │
+│                                                         trigger policy       │
+│                                                         re-run.              │
+│                                                         [default:            │
+│                                                         no-send-blank-push]  │
+│    --help                                               Show this message    │
+│                                                         and exit.            │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+
+
+======================================
+COMMAND: remediate-profiles
+======================================
+
+                                                                                
+ Usage: jamf-health-tool remediate-profiles [OPTIONS]                           
+                                                                                
+ Remediate failed profile installations by clearing failed MDM commands and     
+ repushing profiles.                                                            
+                                                                                
+ This command: 1. Finds devices with failed profile installation commands 2.    
+ Clears the failed MDM commands (optional) 3. Sends new InstallProfile commands 
+ 4. Optionally sends a blank push to wake devices                               
+ Safety features: - Dry-run mode to preview actions - Requires explicit profile 
+ IDs to prevent accidental mass changes - Logs all actions for audit trail      
+ Examples:     # Preview remediation for a profile across specific computers    
+ jamf-health-tool remediate-profiles --profile-id 10 --computer-id 123          
+ --computer-id 456 --dry-run                                                    
+ # Remediate profile 10 and 20 on all computers in a list     jamf-health-tool  
+ remediate-profiles --profile-id 10 --profile-id 20 --computer-list             
+ computers.txt                                                                  
+ # Remediate and send blank push to wake devices     jamf-health-tool           
+ remediate-profiles --profile-id 15 --computer-id 789 --send-blank-push         
+                                                                                
+╭─ Options ────────────────────────────────────────────────────────────────────╮
+│ *  --profile-id                                 INTEGER  Profile ID(s) to    │
+│                                                          remediate           │
+│                                                          (repeatable).       │
+│                                                          [required]          │
+│    --computer-id                                INTEGER  Computer ID(s) to   │
+│                                                          remediate           │
+│                                                          (repeatable).       │
+│    --computer-list                              PATH     File containing     │
+│                                                          computer            │
+│                                                          IDs/serials/hostna… │
+│    --dry-run                                             Show what would be  │
+│                                                          done without making │
+│                                                          changes.            │
+│    --clear-failed-co…    --no-clear-failed-…             Clear failed MDM    │
+│                                                          commands before     │
+│                                                          repushing (default: │
+│                                                          True).              │
+│                                                          [default:           │
+│                                                          clear-failed-comma… │
+│    --send-blank-push     --no-send-blank-pu…             Send blank push     │
+│                                                          after installing    │
+│                                                          profiles to wake    │
+│                                                          devices.            │
+│                                                          [default:           │
+│                                                          no-send-blank-push] │
+│    --help                                                Show this message   │
+│                                                          and exit.           │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+
+
+======================================
+COMMAND: auto-remediate
+======================================
+
+                                                                                
+ Usage: jamf-health-tool auto-remediate [OPTIONS]                               
+                                                                                
+ Automated remediation with intelligent retry logic.                            
+                                                                                
+ This command automatically retries failed policies and profiles with           
+ exponential backoff and recovery strategies. Perfect for CR windows where you  
+ want automated recovery without manual intervention.                           
+ Features: - Automatic retry with configurable attempts - Blank push between    
+ retries to wake devices - Tracks all attempts for audit trail - Works with     
+ both policies and profiles                                                     
+ Examples:     # Auto-remediate policies with default 3 retries                 
+ jamf-health-tool auto-remediate --policy-id 10 --policy-id 20 --computer-list  
+ failed.txt                                                                     
+ # Auto-remediate profiles with custom retry settings     jamf-health-tool      
+ auto-remediate --profile-id 5 --computer-id 123 --max-retries 5 --retry-delay  
+ 600                                                                            
+ # Preview auto-remediation     jamf-health-tool auto-remediate --policy-id 10  
+ --profile-id 5 --computer-list devices.txt --dry-run                           
+                                                                                
+╭─ Options ────────────────────────────────────────────────────────────────────╮
+│ --policy-id                                    INTEGER  Policy ID(s) to      │
+│                                                         remediate            │
+│                                                         (repeatable).        │
+│ --profile-id                                   INTEGER  Profile ID(s) to     │
+│                                                         remediate            │
+│                                                         (repeatable).        │
+│ --computer-id                                  INTEGER  Computer ID(s) to    │
+│                                                         remediate            │
+│                                                         (repeatable).        │
+│ --computer-list                                PATH     File containing      │
+│                                                         computer             │
+│                                                         IDs/serials/hostnam… │
+│ --max-retries                                  INTEGER  Maximum retry        │
+│                                                         attempts (1-10).     │
+│                                                         [default: 3]         │
+│ --retry-delay                                  INTEGER  Delay between        │
+│                                                         retries in seconds.  │
+│                                                         [default: 300]       │
+│ --send-blank-push       --no-send-blank-pu…             Send blank push      │
+│                                                         between retries to   │
+│                                                         wake devices.        │
+│                                                         [default:            │
+│                                                         send-blank-push]     │
+│ --dry-run                                               Show what would be   │
+│                                                         done without making  │
+│                                                         changes.             │
+│ --output-json,--jso…                           PATH     Write command output │
+│                                                         to JSON file.        │
+│ --help                                                  Show this message    │
+│                                                         and exit.            │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+
+
+======================================
+COMMAND: cr-compare
+======================================
+
+                                                                                
+ Usage: jamf-health-tool cr-compare [OPTIONS]                                   
+                                                                                
+ Compare two CR windows to identify trends and improvements.                    
+                                                                                
+ This command compares results from two CR summary JSON files to: - Identify    
+ performance trends (improving/degrading/stable) - Highlight problem areas      
+ requiring attention - Celebrate improvements and successes - Generate          
+ actionable recommendations                                                     
+ Use this to track CR performance over time and identify patterns.              
+ Examples:     # Compare November and October CRs     jamf-health-tool          
+ cr-compare --current nov_cr.json --previous oct_cr.json                        
+ # Compare and save results     jamf-health-tool cr-compare --current           
+ nov_cr.json --previous oct_cr.json --output-json comparison.json               
+                                                                                
+╭─ Options ────────────────────────────────────────────────────────────────────╮
+│ *  --current                       PATH  Path to current CR summary JSON     │
+│                                          file.                               │
+│                                          [required]                          │
+│ *  --previous                      PATH  Path to previous CR summary JSON    │
+│                                          file.                               │
+│                                          [required]                          │
+│    --output-json,--json-out        PATH  Write command output to JSON file.  │
+│    --help                                Show this message and exit.         │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+
+
+======================================
+COMMAND: problem-devices
+======================================
+
+                                                                                
+ Usage: jamf-health-tool problem-devices [OPTIONS]                              
+                                                                                
+ Identify devices that consistently fail across multiple CR windows.            
+                                                                                
+ This command analyzes multiple CR summary files to find problem devices that   
+ repeatedly fail policies, patch compliance, or other checks.                   
+ Use this to: - Identify hardware that needs replacement - Find devices         
+ requiring reimaging - Detect configuration issues - Prioritize remediation     
+ efforts                                                                        
+ Examples:     # Analyze last 3 months of CRs     jamf-health-tool              
+ problem-devices --cr-summary oct_cr.json --cr-summary nov_cr.json --cr-summary 
+ dec_cr.json                                                                    
+ # Find devices with 5+ failures     jamf-health-tool problem-devices           
+ --cr-summary *.json --min-failures 5 --lookback-days 60                        
+ # Export problem devices list     jamf-health-tool problem-devices             
+ --cr-summary *.json --output-json problem_devices.json                         
+                                                                                
+╭─ Options ────────────────────────────────────────────────────────────────────╮
+│ *  --cr-summary                    PATH     CR summary JSON file(s) to       │
+│                                             analyze (repeatable).            │
+│                                             [required]                       │
+│    --min-failures                  INTEGER  Minimum failures to be           │
+│                                             considered a problem device.     │
+│                                             [default: 3]                     │
+│    --lookback-days                 INTEGER  Only consider CRs within this    │
+│                                             many days.                       │
+│                                             [default: 90]                    │
+│    --output-json,--json-out        PATH     Write command output to JSON     │
+│                                             file.                            │
+│    --help                                   Show this message and exit.      │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+
+
+======================================
+COMMAND: run-workflow
+======================================
+
+                                                                                
+ Usage: jamf-health-tool run-workflow [OPTIONS]                                 
+                                                                                
+ Execute a predefined CR workflow from YAML configuration.                      
+                                                                                
+ Workflows allow you to define repeatable CR processes with multiple commands   
+ executed in sequence across different phases.                                  
+ Workflow file structure:     workflows:       monthly_patching:                
+ pre_cr:           - command: cr-readiness             args:                    
+ scope_group_id: 100         during_cr:           - command: patch-compliance   
+ args:               os_version: "14.7.1"         post_cr:           - command: 
+ cr-summary             args:               output_html: report.html            
+ Examples:     # Validate workflow file     jamf-health-tool run-workflow       
+ --workflow-file workflows.yml --workflow monthly --validate-only               
+ # Preview workflow execution     jamf-health-tool run-workflow --workflow-file 
+ workflows.yml --workflow monthly --dry-run                                     
+ # Run entire workflow     jamf-health-tool run-workflow --workflow-file        
+ workflows.yml --workflow monthly                                               
+ # Run only pre-CR phase     jamf-health-tool run-workflow --workflow-file      
+ workflows.yml --workflow monthly --phase pre_cr                                
+                                                                                
+╭─ Options ────────────────────────────────────────────────────────────────────╮
+│ *  --workflow-file                 PATH  Path to workflow YAML file.         │
+│                                          [required]                          │
+│ *  --workflow                      TEXT  Name of workflow to execute.        │
+│                                          [required]                          │
+│    --phase                         TEXT  Specific phase to run (pre_cr,      │
+│                                          during_cr, post_cr). If not         │
+│                                          specified, runs all phases.         │
+│    --dry-run                             Show what would be done without     │
+│                                          executing.                          │
+│    --validate-only                       Only validate workflow file         │
+│                                          structure.                          │
+│    --output-json,--json-out        PATH  Write command output to JSON file.  │
+│    --help                                Show this message and exit.         │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+

@@ -1,0 +1,79 @@
+{
+  "generatedAt": "2024-11-22T17:30:00Z",
+  "scope": {
+    "totalDevices": 50,
+    "policies": [100, 101],
+    "profiles": [5]
+  },
+  "configuration": {
+    "maxRetries": 3,
+    "retryDelay": 300,
+    "sendBlankPush": true
+  },
+  "results": {
+    "successful": {
+      "count": 45,
+      "percentage": 90.0
+    },
+    "stillFailing": {
+      "count": 5,
+      "percentage": 10.0
+    }
+  },
+  "retryStatistics": {
+    "fixedOnRetry1": 30,
+    "fixedOnRetry2": 12,
+    "fixedOnRetry3": 3,
+    "stillFailing": 5
+  },
+  "deviceResults": [
+    {
+      "computerId": 701,
+      "computerName": "MacBook-Retry-Success",
+      "serial": "C02REM001",
+      "success": true,
+      "retriesNeeded": 1,
+      "timeline": [
+        {
+          "attempt": 1,
+          "timestamp": "2024-11-22T17:00:00Z",
+          "action": "Flushed policy logs, sent blank push",
+          "success": true
+        }
+      ]
+    },
+    {
+      "computerId": 702,
+      "computerName": "MacBook-Retry-Failed",
+      "serial": "C02REM002",
+      "success": false,
+      "retriesNeeded": 3,
+      "timeline": [
+        {
+          "attempt": 1,
+          "timestamp": "2024-11-22T17:00:00Z",
+          "action": "Flushed policy logs, sent blank push",
+          "success": false
+        },
+        {
+          "attempt": 2,
+          "timestamp": "2024-11-22T17:05:00Z",
+          "action": "Flushed policy logs, sent blank push",
+          "success": false
+        },
+        {
+          "attempt": 3,
+          "timestamp": "2024-11-22T17:10:00Z",
+          "action": "Flushed policy logs, sent blank push",
+          "success": false
+        }
+      ],
+      "recommendation": "Manual intervention required - possible hardware issue"
+    }
+  ],
+  "recommendations": [
+    "Review 5 persistently failing devices for hardware issues",
+    "Consider manual intervention for remaining failures",
+    "Check device logs for recurring error patterns"
+  ]
+}

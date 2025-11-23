@@ -1,0 +1,100 @@
+{
+  "generatedAt": "2025-11-22T07:30:08.156820+00:00",
+  "crWindow": {
+    "start": "2024-10-01T00:00:00Z",
+    "end": "2024-11-22T23:59:59Z",
+    "durationDays": 53
+  },
+  "scope": {
+    "totalDevices": 4,
+    "scopeGroupId": null
+  },
+  "availability": {
+    "onlineDuringWindow": {
+      "count": 4,
+      "percentage": 100.0,
+      "devices": [
+        {
+          "computerId": 5,
+          "name": "Managed\u2019s Virtual Machine",
+          "serial": null,
+          "lastCheckIn": "2025-10-14T17:50:01.332Z",
+          "osVersion": "26.0.0"
+        },
+        {
+          "computerId": 8,
+          "name": "Z22W44PWYP-macOS",
+          "serial": null,
+          "lastCheckIn": "2025-11-07T18:47:10.624Z",
+          "osVersion": "15.7.2"
+        },
+        {
+          "computerId": 7,
+          "name": "Z44737PLHF-macOS",
+          "serial": null,
+          "lastCheckIn": "2025-10-17T16:09:49.226Z",
+          "osVersion": "14.6.1"
+        },
+        {
+          "computerId": 6,
+          "name": "ZN5YPGVPMD-macOS",
+          "serial": null,
+          "lastCheckIn": "2025-11-08T20:33:34.967Z",
+          "osVersion": "26.0.1"
+        }
+      ]
+    },
+    "offlineDuringWindow": {
+      "count": 0,
+      "percentage": 0.0,
+      "devices": []
+    },
+    "onlinePartialWindow": {
+      "count": 4,
+      "percentage": 100.0,
+      "devices": [
+        {
+          "computerId": 5,
+          "name": "Managed\u2019s Virtual Machine",
+          "serial": null,
+          "lastCheckIn": "2025-10-14T17:50:01.332Z",
+          "osVersion": "26.0.0"
+        },
+        {
+          "computerId": 8,
+          "name": "Z22W44PWYP-macOS",
+          "serial": null,
+          "lastCheckIn": "2025-11-07T18:47:10.624Z",
+          "osVersion": "15.7.2"
+        },
+        {
+          "computerId": 7,
+          "name": "Z44737PLHF-macOS",
+          "serial": null,
+          "lastCheckIn": "2025-10-17T16:09:49.226Z",
+          "osVersion": "14.6.1"
+        },
+        {
+          "computerId": 6,
+          "name": "ZN5YPGVPMD-macOS",
+          "serial": null,
+          "lastCheckIn": "2025-11-08T20:33:34.967Z",
+          "osVersion": "26.0.1"
+        }
+      ]
+    },
+    "onlineEntireWindow": {
+      "count": 0,
+      "percentage": 0,
+      "devices": []
+    },
+    "offlineEntireWindow": {
+      "count": 0,
+      "percentage": 0.0,
+      "devices": []
+    }
+  },
+  "recommendations": [
+    "Good device availability: 100.0% online during window"
+  ]
+}

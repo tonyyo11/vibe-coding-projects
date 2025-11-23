@@ -1,0 +1,62 @@
+{
+  "generatedAt": "2025-11-22T07:07:39.456190+00:00",
+  "scope": {
+    "totalDevices": 4,
+    "onlineDevices": 4,
+    "offlineDevices": 0
+  },
+  "targets": [
+    {
+      "total": 1,
+      "compliant": 1,
+      "outdated": 0,
+      "unknown": 0,
+      "excluded": 3,
+      "complianceRate": 100.0,
+      "compliantDevices": [
+        {
+          "computerId": 8,
+          "name": "Z22W44PWYP-macOS",
+          "serial": null,
+          "osVersion": "15.7.2"
+        }
+      ],
+      "outdatedDevices": [],
+      "unknownDevices": [],
+      "excludedDevices": [
+        {
+          "computerId": 5,
+          "name": "Managed\u2019s Virtual Machine",
+          "serial": null,
+          "osVersion": "26.0.0",
+          "reason": "Running macOS 26.x (not checking this major version)"
+        },
+        {
+          "computerId": 7,
+          "name": "Z44737PLHF-macOS",
+          "serial": null,
+          "osVersion": "14.6.1",
+          "reason": "Running macOS 14.x (not checking this major version)"
+        },
+        {
+          "computerId": 6,
+          "name": "ZN5YPGVPMD-macOS",
+          "serial": null,
+          "osVersion": "26.0.1",
+          "reason": "Running macOS 26.x (not checking this major version)"
+        }
+      ],
+      "targetVersions": [
+        "15.1"
+      ],
+      "target": {
+        "name": "macOS",
+        "type": "os",
+        "minVersion": "15.1",
+        "critical": true
+      }
+    }
+  ],
+  "offlineDevices": [],
+  "overallCompliance": 100.0
+}

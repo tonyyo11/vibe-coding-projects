@@ -1,0 +1,56 @@
+{
+  "generatedAt": "2025-11-22T09:02:35.749592+00:00",
+  "scope": {
+    "totalDevices": 4,
+    "onlineDevices": 4,
+    "offlineDevices": 0
+  },
+  "targets": [
+    {
+      "target": {
+        "name": "Safari",
+        "type": "application",
+        "minVersion": "18.0",
+        "critical": true,
+        "bundleId": null
+      },
+      "total": 4,
+      "compliant": 3,
+      "nonCompliant": 1,
+      "notInstalled": 0,
+      "complianceRate": 75.0,
+      "compliantDevices": [
+        {
+          "computerId": 5,
+          "name": "Managed\u2019s Virtual Machine",
+          "serial": null,
+          "version": "26.0"
+        },
+        {
+          "computerId": 8,
+          "name": "Z22W44PWYP-macOS",
+          "serial": null,
+          "version": "26.1"
+        },
+        {
+          "computerId": 6,
+          "name": "ZN5YPGVPMD-macOS",
+          "serial": null,
+          "version": "26.0.1"
+        }
+      ],
+      "nonCompliantDevices": [
+        {
+          "computerId": 7,
+          "name": "Z44737PLHF-macOS",
+          "serial": null,
+          "version": "17.6",
+          "reason": "Version 17.6 < 18.0"
+        }
+      ],
+      "notInstalledDevices": []
+    }
+  ],
+  "offlineDevices": [],
+  "overallCompliance": 75.0
+}

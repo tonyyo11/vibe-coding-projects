@@ -1,0 +1,102 @@
+{
+  "generatedAt": "2024-11-22T17:30:00Z",
+  "crName": "November 2024 Patching",
+  "crWindow": {
+    "start": "2024-11-18T00:00:00Z",
+    "end": "2024-11-22T23:59:59Z",
+    "durationDays": 5
+  },
+  "successThreshold": 0.95,
+  "scope": {
+    "totalDevices": 1000,
+    "scopeGroupId": 123
+  },
+  "deviceAvailability": {
+    "onlineEntireWindow": 850,
+    "onlineEntireWindowPercentage": 85.0,
+    "onlinePartialWindow": 130,
+    "onlinePartialWindowPercentage": 13.0,
+    "offlineEntireWindow": 20,
+    "offlineEntireWindowPercentage": 2.0
+  },
+  "policyExecution": {
+    "summary": [
+      {
+        "policyId": 100,
+        "policyName": "macOS 15.1 Update",
+        "completedCount": 930,
+        "failedCount": 50,
+        "successRate": 94.9
+      },
+      {
+        "policyId": 101,
+        "policyName": "Safari 18.1 Update",
+        "completedCount": 940,
+        "failedCount": 40,
+        "successRate": 95.9
+      },
+      {
+        "policyId": 102,
+        "policyName": "Security Baseline Profile",
+        "completedCount": 960,
+        "failedCount": 20,
+        "successRate": 98.0
+      }
+    ],
+    "totals": {
+      "totalExecutions": 2940,
+      "completed": 2830,
+      "failed": 110,
+      "overallSuccessRate": 96.3
+    },
+    "failedDevices": [
+      {
+        "computerId": 234,
+        "computerName": "MacBook-Failed-01",
+        "serial": "C02FAIL001",
+        "failedPolicies": [100, 101],
+        "failureReasons": ["Insufficient disk space", "Update download failed"]
+      }
+    ]
+  },
+  "patchCompliance": {
+    "overallCompliance": 96.8,
+    "targets": [
+      {
+        "target": {
+          "name": "macOS",
+          "type": "os",
+          "minVersion": "15.1",
+          "critical": true
+        },
+        "total": 980,
+        "compliant": 933,
+        "outdated": 47,
+        "complianceRate": 95.2
+      },
+      {
+        "target": {
+          "name": "Safari",
+          "type": "application",
+          "minVersion": "18.1",
+          "critical": true
+        },
+        "total": 433,
+        "compliant": 425,
+        "complianceRate": 98.2
+      }
+    ]
+  },
+  "crStatus": {
+    "successful": true,
+    "overallCompliance": 96.8,
+    "metThreshold": true,
+    "issues": [],
+    "nextSteps": [
+      "Review 50 devices with policy failures (see failedDevices in JSON)",
+      "Follow up on 20 devices offline during CR window",
+      "CR completed successfully - verify random sample of devices",
+      "Document CR completion in change management system"
+    ]
+  }
+}

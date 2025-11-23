@@ -1,0 +1,224 @@
+# Jamf Health Tool Workflow Examples
+# Copy this file to create your own workflows
+#
+# Workflow structure:
+#   workflows:
+#     workflow_name:
+#       pre_cr:    # Commands to run before CR window
+#       during_cr: # Commands to run during CR window
+#       post_cr:   # Commands to run after CR window
+
+workflows:
+  # Example 1: Complete Monthly Patching Workflow
+  monthly_patching:
+    pre_cr:
+      # Check device readiness before CR window
+      - command: cr-readiness
+        args:
+          scope_group_id: 100
+          min_check_in_hours: 24
+          min_disk_space: 15
+          output_json: pre_cr_readiness.json
+
+      # Wake offline devices
+      - command: wake-devices
+        args:
+          computer_list: scope_computers.txt
+
+      # Update inventory for accurate data
+      - command: update-inventory
+        args:
+          computer_list: scope_computers.txt
+
+    during_cr:
+      # Check patch compliance
+      - command: patch-compliance
+        args:
+          os_version: ["14.7.1"]
+          target_app: ["Google Chrome:120.0", "Microsoft Office:16.80"]
+          scope_group_id: 100
+          output_json: patch_compliance.json
+
+      # Check policy execution
+      - command: policy-failures
+        args:
+          policy_id: [10, 20, 30]
+          scope_group_id: 100
+          output_json: policy_failures.json
+
+      # Auto-remediate failures with retry
+      - command: auto-remediate
+        args:
+          policy_id: [10, 20]
+          profile_id: [5, 6]
+          computer_list: failed_devices.txt
+          max_retries: 3
+          retry_delay: 300
+          send_blank_push: true
+
+    post_cr:
+      # Generate comprehensive CR summary
+      - command: cr-summary
+        args:
+          cr_name: "November 2024 Patching"
+          cr_start: "11-15-2024"
+          cr_end: "11-22-2024"
+          policy_id: [10, 20, 30]
+          target_os_version: ["14.7.1"]
+          target_app: ["Google Chrome:120.0"]
+          scope_group_id: 100
+          output_json: cr_summary.json
+          output_html: cr_summary.html
+
+      # Compare with previous CR
+      - command: cr-compare
+        args:
+          current: cr_summary.json
+          previous: oct_cr_summary.json
+          output_json: cr_comparison.json
+
+
+  # Example 2: Quick Health Check (No CR Window)
+  quick_health_check:
+    during_cr:
+      # Check recent device availability
+      - command: device-availability
+        args:
+          cr_start: "11-18-2024"
+          cr_end: "11-22-2024"
+          scope_group_id: 100
+          output_json: availability.json
+
+      # Check for MDM failures
+      - command: mdm-failures
+        args:
+          days: 7
+          scope_group_id: 100
+          output_json: mdm_failures.json
+
+      # Remediate failed MDM commands
+      - command: remediate-profiles
+        args:
+          profile_id: [5, 6, 7]
+          computer_list: mdm_failed.txt
+          send_blank_push: true
+          dry_run: false
+
+
+  # Example 3: Problem Device Analysis
+  problem_device_analysis:
+    post_cr:
+      # Analyze problem devices across multiple CRs
+      - command: problem-devices
+        args:
+          cr_summary: ["sept_cr.json", "oct_cr.json", "nov_cr.json"]
+          min_failures: 3
+          lookback_days: 90
+          output_json: problem_devices.json
+
+      # Remediate top problem devices
+      - command: auto-remediate
+        args:
+          policy_id: [10, 20]
+          computer_list: top_problem_devices.txt
+          max_retries: 5
+          retry_delay: 600
+
+
+  # Example 4: Pre-CR Preparation Only
+  pre_cr_prep:
+    pre_cr:
+      # Check readiness
+      - command: cr-readiness
+        args:
+          scope_group_id: 100
+          output_json: readiness.json
+
+      # Wake all scoped devices
+      - command: wake-devices
+        args:
+          computer_list: all_scope.txt
+
+      # Force inventory update
+      - command: update-inventory
+        args:
+          computer_list: all_scope.txt
+
+
+  # Example 5: Post-CR Reporting Only
+  post_cr_reporting:
+    post_cr:
+      # Generate summary
+      - command: cr-summary
+        args:
+          cr_name: "December 2024 Patching"
+          cr_start: "12-15-2024"
+          cr_end: "12-22-2024"
+          policy_id: [10, 20, 30]
+          scope_group_id: 100
+          output_json: dec_summary.json
+          output_html: dec_summary.html
+
+      # Compare with November
+      - command: cr-compare
+        args:
+          current: dec_summary.json
+          previous: nov_summary.json
+          output_json: dec_comparison.json
+
+      # Identify problem devices
+      - command: problem-devices
+        args:
+          cr_summary: ["oct_summary.json", "nov_summary.json", "dec_summary.json"]
+          output_json: dec_problems.json
+
+
+  # Example 6: Emergency Remediation
+  emergency_fix:
+    during_cr:
+      # Wake all devices immediately
+      - command: wake-devices
+        args:
+          computer_list: emergency_list.txt
+
+      # Flush policy logs and retry
+      - command: remediate-policies
+        args:
+          policy_id: [critical_policy_id]
+          computer_list: emergency_list.txt
+          send_blank_push: true
+
+      # Auto-remediate with aggressive retry
+      - command: auto-remediate
+        args:
+          policy_id: [critical_policy_id]
+          computer_list: emergency_list.txt
+          max_retries: 10
+          retry_delay: 180
+          send_blank_push: true
+
+
+# How to use:
+#
+# 1. Copy this file and customize for your environment
+#    cp .workflows.yml.example my_workflows.yml
+#
+# 2. Validate your workflow
+#    jamf-health-tool run-workflow --workflow-file my_workflows.yml --workflow monthly_patching --validate-only
+#
+# 3. Preview execution (dry run)
+#    jamf-health-tool run-workflow --workflow-file my_workflows.yml --workflow monthly_patching --dry-run
+#
+# 4. Run specific phase
+#    jamf-health-tool run-workflow --workflow-file my_workflows.yml --workflow monthly_patching --phase pre_cr
+#
+# 5. Run entire workflow
+#    jamf-health-tool run-workflow --workflow-file my_workflows.yml --workflow monthly_patching
+#
+# Notes:
+# - Replace placeholder IDs (100, 10, 20, etc.) with your actual Jamf Pro IDs
+# - Update file paths to match your environment
+# - Test with --dry-run before running for real
+# - All arguments use snake_case in YAML (converted to kebab-case automatically)
+# - Boolean args: use true/false
+# - List args: use YAML list syntax [ item1, item2 ]

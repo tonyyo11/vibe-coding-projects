@@ -1,0 +1,170 @@
+{
+  "generatedAt": "2025-11-22T07:30:24.463938+00:00",
+  "crName": "November Testing",
+  "crWindow": {
+    "start": "2024-11-01T00:00:00Z",
+    "end": "2024-11-22T23:59:59Z",
+    "durationDays": 22
+  },
+  "successThreshold": 0.95,
+  "deviceAvailability": {
+    "onlineDuringWindow": {
+      "count": 4,
+      "percentage": 100.0,
+      "devices": [
+        {
+          "computerId": 5,
+          "name": "Managed\u2019s Virtual Machine",
+          "serial": null,
+          "lastCheckIn": "2025-10-14T17:50:01.332Z",
+          "osVersion": "26.0.0"
+        },
+        {
+          "computerId": 8,
+          "name": "Z22W44PWYP-macOS",
+          "serial": null,
+          "lastCheckIn": "2025-11-07T18:47:10.624Z",
+          "osVersion": "15.7.2"
+        },
+        {
+          "computerId": 7,
+          "name": "Z44737PLHF-macOS",
+          "serial": null,
+          "lastCheckIn": "2025-10-17T16:09:49.226Z",
+          "osVersion": "14.6.1"
+        },
+        {
+          "computerId": 6,
+          "name": "ZN5YPGVPMD-macOS",
+          "serial": null,
+          "lastCheckIn": "2025-11-08T20:33:34.967Z",
+          "osVersion": "26.0.1"
+        }
+      ]
+    },
+    "offlineDuringWindow": {
+      "count": 0,
+      "percentage": 0.0,
+      "devices": []
+    },
+    "onlinePartialWindow": {
+      "count": 4,
+      "percentage": 100.0,
+      "devices": [
+        {
+          "computerId": 5,
+          "name": "Managed\u2019s Virtual Machine",
+          "serial": null,
+          "lastCheckIn": "2025-10-14T17:50:01.332Z",
+          "osVersion": "26.0.0"
+        },
+        {
+          "computerId": 8,
+          "name": "Z22W44PWYP-macOS",
+          "serial": null,
+          "lastCheckIn": "2025-11-07T18:47:10.624Z",
+          "osVersion": "15.7.2"
+        },
+        {
+          "computerId": 7,
+          "name": "Z44737PLHF-macOS",
+          "serial": null,
+          "lastCheckIn": "2025-10-17T16:09:49.226Z",
+          "osVersion": "14.6.1"
+        },
+        {
+          "computerId": 6,
+          "name": "ZN5YPGVPMD-macOS",
+          "serial": null,
+          "lastCheckIn": "2025-11-08T20:33:34.967Z",
+          "osVersion": "26.0.1"
+        }
+      ]
+    },
+    "onlineEntireWindow": {
+      "count": 0,
+      "percentage": 0,
+      "devices": []
+    },
+    "offlineEntireWindow": {
+      "count": 0,
+      "percentage": 0.0,
+      "devices": []
+    }
+  },
+  "scope": {
+    "totalDevices": 4,
+    "scopeGroupId": null
+  },
+  "policyExecution": {
+    "message": "No policies specified for evaluation"
+  },
+  "patchCompliance": {
+    "overallCompliance": 100.0,
+    "targets": [
+      {
+        "total": 1,
+        "compliant": 1,
+        "outdated": 0,
+        "unknown": 0,
+        "excluded": 3,
+        "complianceRate": 100.0,
+        "compliantDevices": [
+          {
+            "computerId": 8,
+            "name": "Z22W44PWYP-macOS",
+            "serial": null,
+            "osVersion": "15.7.2"
+          }
+        ],
+        "outdatedDevices": [],
+        "unknownDevices": [],
+        "excludedDevices": [
+          {
+            "computerId": 5,
+            "name": "Managed\u2019s Virtual Machine",
+            "serial": null,
+            "osVersion": "26.0.0",
+            "reason": "Running macOS 26.x (not checking this major version)"
+          },
+          {
+            "computerId": 7,
+            "name": "Z44737PLHF-macOS",
+            "serial": null,
+            "osVersion": "14.6.1",
+            "reason": "Running macOS 14.x (not checking this major version)"
+          },
+          {
+            "computerId": 6,
+            "name": "ZN5YPGVPMD-macOS",
+            "serial": null,
+            "osVersion": "26.0.1",
+            "reason": "Running macOS 26.x (not checking this major version)"
+          }
+        ],
+        "targetVersions": [
+          "15.1"
+        ],
+        "target": {
+          "name": "macOS",
+          "type": "os",
+          "minVersion": "15.1",
+          "critical": true
+        }
+      }
+    ],
+    "scope": {
+      "totalDevices": 4,
+      "onlineDevices": 4,
+      "offlineDevices": 0
+    }
+  },
+  "crStatus": {
+    "successful": true,
+    "issues": [],
+    "nextSteps": [
+      "CR completed successfully - verify random sample of devices",
+      "Document CR completion in change management system"
+    ]
+  }
+}

@@ -1,0 +1,76 @@
+{
+  "generatedAt": "2024-11-22T17:30:00Z",
+  "scope": {
+    "totalDevices": 1000,
+    "scopeGroupId": 123
+  },
+  "criteria": {
+    "minCheckInHours": 24,
+    "minDiskSpaceGB": 15.0,
+    "minBatteryPercent": 20
+  },
+  "readiness": {
+    "ready": {
+      "count": 950,
+      "percentage": 95.0
+    },
+    "notReady": {
+      "count": 50,
+      "percentage": 5.0
+    }
+  },
+  "issues": {
+    "checkInIssues": {
+      "count": 20,
+      "devices": [
+        {
+          "id": 601,
+          "name": "MacBook-Offline",
+          "serial": "C02CHECK001",
+          "lastCheckIn": "2024-11-20T10:00:00Z",
+          "hoursAgo": 38.5
+        }
+      ]
+    },
+    "diskSpaceIssues": {
+      "count": 15,
+      "devices": [
+        {
+          "id": 602,
+          "name": "MacBook-LowDisk",
+          "serial": "C02DISK001",
+          "freeSpaceGB": 8.2,
+          "requiredGB": 15.0
+        }
+      ]
+    },
+    "mdmIssues": {
+      "count": 10,
+      "devices": [
+        {
+          "id": 603,
+          "name": "MacBook-MDM-Issue",
+          "serial": "C02MDM001",
+          "issue": "Pending MDM enrollment"
+        }
+      ]
+    },
+    "batteryIssues": {
+      "count": 5,
+      "devices": [
+        {
+          "id": 604,
+          "name": "MacBook-LowBat",
+          "serial": "C02BAT001",
+          "batteryPercent": 12
+        }
+      ]
+    }
+  },
+  "recommendations": [
+    "Wake 20 devices with blank push before CR",
+    "Free up disk space on 15 devices before CR",
+    "Re-enroll or fix MDM for 10 devices",
+    "Ensure 5 devices are charging before CR starts"
+  ]
+}

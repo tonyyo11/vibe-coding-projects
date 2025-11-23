@@ -1,0 +1,54 @@
+{
+  "generatedAt": "2024-11-22T17:30:00Z",
+  "comparison": {
+    "current": {
+      "crName": "November 2024 CR",
+      "crDate": "2024-11-18T00:00:00Z"
+    },
+    "previous": {
+      "crName": "October 2024 CR",
+      "crDate": "2024-10-18T00:00:00Z"
+    }
+  },
+  "metrics": {
+    "overallCompliance": {
+      "current": 96.8,
+      "previous": 94.7,
+      "delta": 2.1,
+      "trend": "IMPROVING"
+    },
+    "deviceAvailability": {
+      "current": 98.0,
+      "previous": 96.5,
+      "delta": 1.5,
+      "trend": "IMPROVING"
+    },
+    "policySuccessRate": {
+      "current": 96.3,
+      "previous": 95.5,
+      "delta": 0.8,
+      "trend": "STABLE"
+    }
+  },
+  "trends": {
+    "improving": [
+      "Overall compliance increasing (+2.1%)",
+      "Device availability better (+1.5%)"
+    ],
+    "stable": [
+      "Policy execution consistent (+0.8%)"
+    ],
+    "degrading": []
+  },
+  "problemAreas": [],
+  "improvements": [
+    "Device availability improved significantly",
+    "Overall compliance trending upward",
+    "Policy execution remains strong"
+  ],
+  "recommendations": [
+    "✓ Maintain current CR process",
+    "✓ Continue monitoring trends",
+    "✓ No process changes needed"
+  ]
+}

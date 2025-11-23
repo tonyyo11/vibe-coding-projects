@@ -1,0 +1,73 @@
+{
+  "generatedAt": "2024-11-22T17:30:00Z",
+  "scope": {
+    "totalDevices": 1000,
+    "onlineDevices": 980,
+    "offlineDevices": 20,
+    "limitingGroupId": 123
+  },
+  "targets": [
+    {
+      "target": {
+        "name": "macOS",
+        "type": "os",
+        "minVersion": "14.7.1,15.1,26.0",
+        "critical": true
+      },
+      "total": 980,
+      "compliant": 933,
+      "outdated": 47,
+      "complianceRate": 95.2,
+      "versionBreakdown": {
+        "14.7.1 (Sonoma)": 500,
+        "15.1 (Sequoia)": 428,
+        "26.0 (Tahoe)": 5,
+        "Other": 47
+      }
+    },
+    {
+      "target": {
+        "name": "Safari",
+        "type": "application",
+        "minVersion": "18.1",
+        "critical": true,
+        "patchMgmtId": 4
+      },
+      "total": 433,
+      "compliant": 425,
+      "outdated": 5,
+      "notInstalled": 3,
+      "complianceRate": 98.2,
+      "note": "Only checking devices on macOS 15.x (547 devices excluded - not eligible)"
+    },
+    {
+      "target": {
+        "name": "Google Chrome",
+        "type": "application",
+        "minVersion": "131.0.6778.86",
+        "critical": true,
+        "patchMgmtId": 12
+      },
+      "total": 980,
+      "compliant": 965,
+      "outdated": 10,
+      "notInstalled": 5,
+      "complianceRate": 98.5
+    }
+  ],
+  "overallCompliance": 96.8,
+  "offlineDevices": [
+    {
+      "id": 501,
+      "name": "MacBook-Offline-01",
+      "serial": "C02ABC001",
+      "lastContactTime": "2024-11-15T10:30:00Z"
+    },
+    {
+      "id": 502,
+      "name": "MacBook-Offline-02",
+      "serial": "C02ABC002",
+      "lastContactTime": "2024-11-14T14:20:00Z"
+    }
+  ]
+}

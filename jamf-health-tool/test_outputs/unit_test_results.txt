@@ -1,0 +1,13 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.14.0, pytest-9.0.1, pluggy-1.6.0
+rootdir: /Users/alyoung/jamf_health_tool
+configfile: pyproject.toml
+collected 38 items
+
+tests/test_jamf_client.py ...                                            [  7%]
+tests/test_mdm_failures.py .                                             [ 10%]
+tests/test_new_features.py ...............................               [ 92%]
+tests/test_policy_failures.py ..                                         [ 97%]
+tests/test_profile_audit.py .                                            [100%]
+
+============================== 38 passed in 2.09s ==============================

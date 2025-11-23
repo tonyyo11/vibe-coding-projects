@@ -1,0 +1,112 @@
+# Jamf Health Tool Configuration File Example
+# Copy this file to ~/.jamf_health_tool.yml and customize for your environment
+
+# =============================================================================
+# Jamf Pro Connection Settings
+# =============================================================================
+
+# Your Jamf Pro tenant URL (can also be set via JAMF_BASE_URL environment variable)
+tenant_url: "https://yourserver.jamfcloud.com"
+
+# Alternative: If using Jamf API Utility (apiutil), specify the target name
+# default_target: "production"
+
+
+# =============================================================================
+# Default Scope Settings
+# =============================================================================
+
+# Default limiting group ID for scoping operations
+# This will be used if --limiting-group-id or --scope-group-id is not specified
+# default_limiting_group_id: 123
+
+# Default profile IDs for profile-scope-audit command
+# These will be checked if --limit-to-profile-id is not specified
+# default_profile_ids: [10, 20, 30, 40]
+
+
+# =============================================================================
+# Caching Configuration
+# =============================================================================
+
+cache:
+  # Enable or disable API response caching
+  enabled: true
+
+  # Cache time-to-live in seconds
+  # Default: 3600 (1 hour)
+  # Recommended values:
+  #   - 1800 (30 minutes) for frequently changing data
+  #   - 3600 (1 hour) for standard use
+  #   - 7200 (2 hours) for relatively stable environments
+  ttl: 3600
+
+  # Custom cache directory (optional)
+  # Default: ~/.jamf_health_tool/cache
+  # directory: /custom/path/to/cache
+
+
+# =============================================================================
+# Concurrency Configuration
+# =============================================================================
+
+concurrency:
+  # Enable or disable concurrent API calls
+  # Concurrency dramatically speeds up operations that fetch multiple resources
+  # (e.g., fetching details for 100 configuration profiles)
+  enabled: true
+
+  # Maximum number of concurrent workers (threads)
+  # Default: 10
+  # Recommendations:
+  #   - Small environments (<500 devices): 5-10 workers
+  #   - Medium environments (500-2000 devices): 10-15 workers
+  #   - Large environments (2000+ devices): 15-20 workers
+  # Note: Higher values = faster but more load on Jamf server
+  max_workers: 10
+
+  # Rate limit (requests per second)
+  # Default: 0 (no limit)
+  # Set this if your Jamf server has rate limiting or if you want to be gentle
+  # Example: 5.0 = maximum 5 requests per second
+  rate_limit: 0
+
+
+# =============================================================================
+# Examples for Different Environments
+# =============================================================================
+
+# Example 1: Production environment with caching and moderate concurrency
+# tenant_url: "https://prod.jamfcloud.com"
+# default_limiting_group_id: 100
+# cache:
+#   enabled: true
+#   ttl: 3600
+# concurrency:
+#   enabled: true
+#   max_workers: 10
+
+# Example 2: Testing environment with caching disabled for fresh data
+# tenant_url: "https://test.jamfcloud.com"
+# cache:
+#   enabled: false
+# concurrency:
+#   enabled: true
+#   max_workers: 5
+
+# Example 3: Large environment with aggressive caching and high concurrency
+# tenant_url: "https://enterprise.jamfcloud.com"
+# cache:
+#   enabled: true
+#   ttl: 7200  # 2 hours
+# concurrency:
+#   enabled: true
+#   max_workers: 20
+#   rate_limit: 10.0  # Max 10 requests/second
+
+# Example 4: Conservative settings for troubleshooting
+# tenant_url: "https://yourserver.jamfcloud.com"
+# cache:
+#   enabled: false  # Always fetch fresh data
+# concurrency:
+#   enabled: false  # Sequential operations for easier debugging

@@ -1,0 +1,85 @@
+{
+  "generatedAt": "2024-11-22T17:30:00Z",
+  "analysisWindow": {
+    "lookbackDays": 90,
+    "crsAnalyzed": 3
+  },
+  "criteria": {
+    "minFailures": 3
+  },
+  "summary": {
+    "totalProblemDevices": 15,
+    "topOffender": {
+      "computerId": 801,
+      "computerName": "MacBook-Problem-01",
+      "serial": "C02PROB001",
+      "failureCount": 9
+    }
+  },
+  "problemDevices": [
+    {
+      "computerId": 801,
+      "computerName": "MacBook-Problem-01",
+      "serial": "C02PROB001",
+      "failureCount": 9,
+      "failureTypes": {
+        "policy": 6,
+        "patch": 3
+      },
+      "failures": [
+        {
+          "crName": "September 2024 CR",
+          "crDate": "2024-09-20T00:00:00Z",
+          "type": "policy",
+          "policyId": 100,
+          "error": "Policy execution failed"
+        },
+        {
+          "crName": "October 2024 CR",
+          "crDate": "2024-10-18T00:00:00Z",
+          "type": "policy",
+          "policyId": 100,
+          "error": "Policy execution failed"
+        },
+        {
+          "crName": "November 2024 CR",
+          "crDate": "2024-11-18T00:00:00Z",
+          "type": "patch",
+          "target": "macOS",
+          "currentVersion": "14.6"
+        }
+      ],
+      "lastCheckIn": "2024-11-22T10:00:00Z",
+      "osVersion": "14.6",
+      "recommendations": [
+        "Critical: Consider removing from production fleet or reimaging",
+        "High priority: Investigate hardware or configuration issues",
+        "Policy execution issues - check network connectivity and MDM enrollment"
+      ]
+    },
+    {
+      "computerId": 802,
+      "computerName": "MacBook-Problem-02",
+      "serial": "C02PROB002",
+      "failureCount": 7,
+      "failureTypes": {
+        "policy": 7,
+        "patch": 0
+      },
+      "lastCheckIn": "2024-11-17T10:00:00Z",
+      "osVersion": "15.0",
+      "recommendations": [
+        "High priority: Investigate hardware or configuration issues",
+        "Policy execution issues - check network connectivity and MDM enrollment",
+        "Device offline for 5.3 days - may need physical intervention"
+      ]
+    }
+  ],
+  "recommendations": [
+    "⚠️  Warning: Significant number of problem devices",
+    "Review top offenders for common patterns",
+    "Use auto-remediate with retry logic for 15 problem devices",
+    "Consider pre-CR readiness checks to catch issues early",
+    "Export problem device list to ticketing system for tracking"
+  ]
+}
