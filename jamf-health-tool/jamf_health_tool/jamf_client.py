@@ -862,7 +862,9 @@ class JamfClient:
 
     # -------- Computer history --------
     def get_computer_history(self, computer_id: int) -> List[PolicyExecutionStatus]:
-        data = self._call(f"/JSSResource/computerhistory/id/{computer_id}")
+        # Use subset endpoint to fetch only PolicyLogs, not entire history
+        # This dramatically reduces response size and prevents timeouts
+        data = self._call(f"/JSSResource/computerhistory/id/{computer_id}/subset/PolicyLogs")
         history = data.get("computer_history") or data
         policy_logs = history.get("policy_logs") or []
         results: List[PolicyExecutionStatus] = []
