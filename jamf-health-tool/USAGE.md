@@ -665,6 +665,107 @@ jamf-health-tool \
 5. Sends summary to Microsoft Teams
 6. Exits with 0 (success) or 1 (needs attention)
 
+### CR Window Filtering
+
+**New in v3.0**: Policy executions are automatically filtered to only count runs within the CR window, preventing completion rates >100%.
+
+#### Why This Matters
+
+Without filtering, weekly automated policies can show inflated completion rates:
+
+**Problem Scenario**:
+- Policy 2573 (Sketch Update) has 66 devices in scope
+- Policy runs weekly (automated, not flushed before CR)
+- During 10-day CR window, some devices run it 2-3 times
+- **Result**: 96 total executions / 66 devices = **145.5% completion rate**
+
+#### How It Works
+
+**Default Behavior (Recommended)**:
+```bash
+jamf-health-tool cr-summary \
+  --cr-start "2024-11-18" \
+  --cr-end "2024-11-22" \
+  --policy-id 2573 \
+  --filter-cr-window  # DEFAULT - enabled automatically
+```
+
+**What Gets Filtered**:
+- ✅ Only counts policy executions between `--cr-start` and `--cr-end`
+- ✅ Deduplicates: Only the **most recent** execution status per device
+- ✅ Automatically handles mid-CR policy flushes
+- ✅ Caps completion rates at 100%
+
+**Example Output (Filtered)**:
+```
+Policy 2573 'Sketch - Auto Update':
+  ✓ Completed: 64 (97.0%)    # Capped at 100%
+  ✗ Failed: 1
+  ⚠ Offline: 1
+```
+
+#### Legacy Mode (All Executions)
+
+To see all policy executions regardless of timing:
+
+```bash
+jamf-health-tool cr-summary \
+  --cr-start "2024-11-18" \
+  --cr-end "2024-11-22" \
+  --policy-id 2573 \
+  --no-filter-cr-window  # Show all runs
+```
+
+**Use Cases for --no-filter-cr-window**:
+- Troubleshooting policy execution issues
+- Understanding full policy run history
+- Analyzing policies that run multiple times intentionally
+- Debugging why completion rates seem low
+
+**Example Output (Unfiltered)**:
+```
+Policy 2573 'Sketch - Auto Update':
+  ✓ Completed: 96 (145.5%)    # Shows multiple runs
+  ✗ Failed: 2
+  ⚠ Offline: 1
+```
+
+#### Real-World Scenarios
+
+**Scenario 1: Weekly Patching Policy**
+- Policy runs every Monday at 9 AM
+- CR window: Nov 18-22 (includes 2 Mondays)
+- Without filtering: Device runs it twice, counted as 200%
+- **With filtering**: Only most recent run counted, capped at 100%
+
+**Scenario 2: Mid-CR Policy Flush**
+- Google Chrome policy flushed on Nov 20 (mid-CR)
+- Pre-flush runs: Nov 18-19
+- Post-flush runs: Nov 20-22
+- **With filtering**: Only counts post-flush runs (correct)
+- Without filtering: Counts both, shows inflated rates
+
+**Scenario 3: Offline Devices with Old Runs**
+- Device last online: Nov 1 (before CR)
+- Policy ran successfully on Nov 1
+- CR window: Nov 18-22
+- **With filtering**: Device marked "Offline" (correct)
+- Without filtering: Shows as "Completed" (misleading)
+
+#### Recommendations
+
+✅ **Use default (--filter-cr-window)** for:
+- Official CR validation reports
+- Change management sign-offs
+- Compliance reporting
+- Determining CR success/failure
+
+⚠️ **Use --no-filter-cr-window** for:
+- Investigating policy behavior
+- Understanding why rates are lower than expected
+- Troubleshooting policy execution timing
+- Developer/admin analysis only
+
 ### Success Threshold
 
 The `--success-threshold` parameter determines CR success:

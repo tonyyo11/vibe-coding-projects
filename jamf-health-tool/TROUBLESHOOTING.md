@@ -603,6 +603,58 @@ If devices truly aren't checking in:
 
 ---
 
+### Problem: Policy Completion Rates >100%
+
+#### Symptoms
+
+```
+Policy 2573 'Sketch Update':
+  ✓ Completed: 96 (145.5%)  # More than 100%!
+  ⚠ Offline: 10
+```
+
+#### Cause
+
+Policy ran multiple times during the CR window due to:
+- Weekly automated schedules
+- Policy not flushed before CR
+- Ongoing/recurring policy triggers
+
+#### Solution
+
+**Version 3.0+: Automatic (Default)**
+
+CR window filtering is enabled by default, which prevents this issue:
+
+```bash
+jamf-health-tool cr-summary \
+  --cr-start "2024-11-18" \
+  --cr-end "2024-11-22" \
+  --policy-id 2573
+  # --filter-cr-window is enabled by default
+```
+
+This automatically:
+- ✅ Only counts executions within CR window
+- ✅ Deduplicates to most recent run per device
+- ✅ Caps completion rates at 100%
+
+**If Using Older Versions or --no-filter-cr-window**
+
+To see accurate rates, upgrade to v3.0+ or manually calculate:
+1. Total unique devices that ran policy successfully
+2. Divide by devices in scope
+3. Cap at 100%
+
+**When >100% Rates Are Legitimate**
+
+Use `--no-filter-cr-window` if you intentionally want to see:
+- All policy run attempts (not just latest)
+- Full execution history for troubleshooting
+- Multiple-run policies (like weekly checks)
+
+---
+
 ### Problem: Low Compliance Rates (<50%)
 
 #### Symptoms

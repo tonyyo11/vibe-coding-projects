@@ -26,6 +26,7 @@ def generate_cr_summary(
     client: JamfClient,
     scope_group_id: Optional[int] = None,
     success_threshold: float = 0.95,
+    filter_to_cr_window: bool = True,
     logger: Optional[logging.Logger] = None,
 ) -> Tuple[Dict, int]:
     """
@@ -45,6 +46,7 @@ def generate_cr_summary(
         client: JamfClient for API calls
         scope_group_id: Optional group ID to limit scope
         success_threshold: Success rate required for CR to pass (default 0.95 = 95%)
+        filter_to_cr_window: If True, only count policy executions within CR window (prevents >100% rates)
         logger: Optional logger instance
 
     Returns:
@@ -60,7 +62,8 @@ def generate_cr_summary(
         ...     "2024-11-22T23:59:59Z",
         ...     [100, 101],
         ...     targets,
-        ...     client
+        ...     client,
+        ...     filter_to_cr_window=True
         ... )
     """
     log = logger or logging.getLogger(__name__)
@@ -119,6 +122,8 @@ def generate_cr_summary(
                 client=client,
                 limiting_group_id=scope_group_id,
                 cr_start=cr_start,
+                cr_end=cr_end,
+                filter_to_cr_window=filter_to_cr_window,
                 logger=log
             )
 

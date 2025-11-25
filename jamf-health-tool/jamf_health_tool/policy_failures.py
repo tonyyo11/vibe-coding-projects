@@ -112,24 +112,66 @@ def _resolve_scope_computers(
     return {cid: inventory_cache[cid] for cid in scoped_ids if cid in inventory_cache}
 
 
-def _classify_history(entries: List[PolicyExecutionStatus]) -> Tuple[int, int, int, Optional[str]]:
+def _classify_history(
+    entries: List[PolicyExecutionStatus],
+    cr_start_dt: Optional[datetime] = None,
+    cr_end_dt: Optional[datetime] = None,
+    filter_to_cr_window: bool = True
+) -> Tuple[int, int, int, Optional[str]]:
+    """
+    Classify policy execution history entries.
+
+    Args:
+        entries: List of PolicyExecutionStatus objects for a specific device and policy
+        cr_start_dt: Optional CR window start datetime
+        cr_end_dt: Optional CR window end datetime
+        filter_to_cr_window: If True, only count executions within CR window (prevents >100% rates)
+
+    Returns:
+        Tuple of (completed_count, failed_count, pending_count, last_failure_time)
+    """
     completed = failed = pending = 0
     last_failure_time: Optional[str] = None
+
     if not entries:
         pending = 1
         return completed, failed, pending, last_failure_time
-    latest_entry = entries[-1]
-    for entry in entries:
-        status = (entry.last_status or "").lower()
-        if status == "failed":
-            failed += 1
-            last_failure_time = entry.last_run_time
-        elif status == "completed" or status == "complete":
-            completed += 1
-        else:
-            pending += 1
-    if latest_entry.last_status and latest_entry.last_status.lower() not in {"failed", "completed", "complete"}:
-        pending += 0  # counted above
+
+    # Filter to CR window if enabled and dates provided
+    filtered_entries = entries
+    if filter_to_cr_window and cr_start_dt and cr_end_dt:
+        filtered_entries = []
+        for entry in entries:
+            if entry.last_run_time:
+                try:
+                    run_dt = datetime.fromisoformat(entry.last_run_time.replace("Z", "+00:00"))
+                    if run_dt.tzinfo is None:
+                        run_dt = run_dt.replace(tzinfo=timezone.utc)
+
+                    # Only include if within CR window
+                    if cr_start_dt <= run_dt <= cr_end_dt:
+                        filtered_entries.append(entry)
+                except Exception:
+                    pass  # Skip entries with invalid timestamps
+
+    if not filtered_entries:
+        # No executions in CR window means policy didn't run (pending)
+        pending = 1
+        return completed, failed, pending, last_failure_time
+
+    # Deduplicate: Only count the most recent execution status
+    # This prevents >100% completion rates when policies run multiple times
+    latest_entry = filtered_entries[-1]
+    status = (latest_entry.last_status or "").lower()
+
+    if status == "failed":
+        failed = 1
+        last_failure_time = latest_entry.last_run_time
+    elif status == "completed" or status == "complete":
+        completed = 1
+    else:
+        pending = 1
+
     return completed, failed, pending, last_failure_time
 
 
@@ -138,6 +180,8 @@ def evaluate_policy_failures(
     client: JamfClient,
     limiting_group_id: Optional[int],
     cr_start: Optional[str] = None,
+    cr_end: Optional[str] = None,
+    filter_to_cr_window: bool = True,
     logger: Optional[logging.Logger] = None,
 ) -> Tuple[List[Dict], int]:
     """
@@ -154,6 +198,8 @@ def evaluate_policy_failures(
         client: JamfClient instance for API calls
         limiting_group_id: Optional group ID to constrain "All Computers" scope
         cr_start: ISO8601 timestamp marking change request start; devices not checked in since are marked offline
+        cr_end: ISO8601 timestamp marking change request end; used for filtering policy executions
+        filter_to_cr_window: If True, only count policy executions within CR window (prevents >100% rates)
         logger: Optional logger instance
 
     Returns:
@@ -162,7 +208,12 @@ def evaluate_policy_failures(
         - exit_code: 0 if no failures, 1 if failures detected
 
     Example:
-        >>> results, exit_code = evaluate_policy_failures([123, 456], client, None, cr_start="2024-01-01T00:00:00Z")
+        >>> results, exit_code = evaluate_policy_failures(
+        ...     [123, 456], client, None,
+        ...     cr_start="2024-01-01T00:00:00Z",
+        ...     cr_end="2024-01-07T23:59:59Z",
+        ...     filter_to_cr_window=True
+        ... )
         >>> print(f"Exit code: {exit_code}, Failures: {results[0]['results']['failed']}")
     """
     log = logger or logging.getLogger(__name__)
@@ -172,6 +223,8 @@ def evaluate_policy_failures(
     exit_code = 0
 
     cr_start_dt: Optional[datetime] = None
+    cr_end_dt: Optional[datetime] = None
+
     if cr_start:
         try:
             cr_start_dt = datetime.fromisoformat(cr_start.replace("Z", "+00:00"))
@@ -179,6 +232,14 @@ def evaluate_policy_failures(
                 cr_start_dt = cr_start_dt.replace(tzinfo=timezone.utc)
         except Exception as exc:
             raise ValueError(f"Invalid --cr-start value: {cr_start}") from exc
+
+    if cr_end:
+        try:
+            cr_end_dt = datetime.fromisoformat(cr_end.replace("Z", "+00:00"))
+            if cr_end_dt.tzinfo is None:
+                cr_end_dt = cr_end_dt.replace(tzinfo=timezone.utc)
+        except Exception as exc:
+            raise ValueError(f"Invalid --cr-end value: {cr_end}") from exc
 
     for pid in policy_ids:
         log.info("Processing policy %s", pid)
@@ -218,7 +279,12 @@ def evaluate_policy_failures(
 
             history = client.get_computer_history(comp.id)
             relevant = [entry for entry in history if entry.policy_id == pid]
-            completed, failed, pending, last_failure_time = _classify_history(relevant)
+            completed, failed, pending, last_failure_time = _classify_history(
+                relevant,
+                cr_start_dt=cr_start_dt,
+                cr_end_dt=cr_end_dt,
+                filter_to_cr_window=filter_to_cr_window
+            )
             completed_total += completed
             failed_total += failed
             pending_total += pending
@@ -226,8 +292,11 @@ def evaluate_policy_failures(
                 failed_devices.append(
                     {
                         "computerId": comp.id,
-                        "name": comp.name,
+                        "computerName": comp.name,  # Changed from "name" to match Excel export
                         "serial": comp.serial,
+                        "policyId": pid,
+                        "policyName": policy.name,
+                        "status": "Failed",
                         "lastFailure": last_failure_time,
                     }
                 )

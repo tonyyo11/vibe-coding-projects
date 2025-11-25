@@ -990,12 +990,16 @@ def cr_summary_cmd(
     app: List[str] = typer.Option(None, "--target-app", help="Target app as 'Name:MinVersion'"),
     scope_group_id: Optional[int] = typer.Option(None, help="Limit to specific group."),
     success_threshold: float = typer.Option(0.95, help="Success rate required (0.0-1.0)"),
+    filter_cr_window: bool = typer.Option(True, "--filter-cr-window/--no-filter-cr-window", help="Filter policy executions to CR window (prevents >100%% rates)"),
     output_json: Optional[Path] = typer.Option(None, "--output-json", "--json-out", help="Write command output to JSON file."),
 ):
     """
     Generate comprehensive CR summary combining policy execution, patch compliance, and device availability.
 
     Date formats accepted: 2024-11-22, 11-22-2024, 11/22/2024, or ISO8601 (2024-11-22T00:00:00Z)
+
+    By default, policy executions are filtered to only count runs within the CR window. This prevents
+    completion rates >100% when policies run multiple times. Use --no-filter-cr-window to see all runs.
     """
     state: CliState = ctx.obj
     logger = state.logger
@@ -1035,6 +1039,7 @@ def cr_summary_cmd(
             client=client,
             scope_group_id=scope_group_id,
             success_threshold=success_threshold,
+            filter_to_cr_window=filter_cr_window,
             logger=logger,
         )
 

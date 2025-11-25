@@ -23,6 +23,7 @@ The Jamf Health Tool provides production-ready CR validation capabilities, allow
 - 🔄 **Progress Tracking** - Real-time feedback during operations
 - 🛡️ **Safe Operations** - Regex validation, dry-run mode, comprehensive error handling
 - 🍎 **macOS 26.x Support** - Full support for macOS Tahoe, Sequoia, and Sonoma
+- 🎯 **Accurate CR Validation** - CR window filtering prevents >100% completion rates from multiple policy runs
 
 ### Core Commands
 
@@ -193,6 +194,9 @@ jamf-health-tool cr-summary \
   --scope-group-id 123 \
   --success-threshold 0.95 \
   --output-json cr_report.json
+
+# Policy executions are automatically filtered to CR window (prevents >100% rates)
+# Use --no-filter-cr-window to see all runs
 ```
 
 ---

@@ -229,6 +229,38 @@ Single command that brings everything together for complete CR validation.
 - 🔄 **Progress Visibility** - See exactly what the tool is doing
 - 🎯 **Auto-Fetch Apps** - No need to specify exact version numbers
 - 🔔 **Teams Integration** - Automatic notifications to Microsoft Teams
+- 🎯 **Accurate Validation** - CR window filtering prevents >100% completion rates
+
+#### CR Window Filtering (NEW in v3.0)
+
+By default, `cr-summary` filters policy executions to only count runs **within the CR window**. This prevents inflated completion rates when policies run multiple times.
+
+**Why This Matters**:
+- Weekly automated policies may run 2-3 times during a 10-day CR window
+- Without filtering: Shows 145.5% completion (96 runs / 66 devices)
+- **With filtering**: Shows accurate ≤100% completion (latest run per device)
+
+**Default Behavior**:
+```bash
+# Automatically enabled - only counts policy runs within CR window
+jamf-health-tool cr-summary \
+  --cr-start 2024-11-18 \
+  --cr-end 2024-11-22 \
+  --policy-id 2573
+  # --filter-cr-window is DEFAULT
+```
+
+**Legacy Mode** (see all runs):
+```bash
+# Disable filtering to see full policy history
+jamf-health-tool cr-summary \
+  --cr-start 2024-11-18 \
+  --cr-end 2024-11-22 \
+  --policy-id 2573 \
+  --no-filter-cr-window  # Show all executions
+```
+
+**Recommended**: Keep filtering enabled for official CR validation reports.
 
 #### Basic Example
 
