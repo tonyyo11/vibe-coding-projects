@@ -94,7 +94,8 @@ def generate_cr_summary(
             "end": cr_end,
             "durationDays": window_duration
         },
-        "successThreshold": success_threshold
+        "successThreshold": success_threshold,
+        "filterToCrWindow": filter_to_cr_window
     }
 
     # 1. Device Availability Analysis

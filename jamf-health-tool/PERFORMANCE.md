@@ -220,13 +220,13 @@ jamf-health-tool patch-compliance --os-version "15.1" \
   --output-json os_compliance.json &
 
 jamf-health-tool device-availability \
-  --cr-start "2024-11-18T00:00:00Z" \
-  --cr-end "2024-11-22T23:59:59Z" \
+  --cr-start "2025-11-18T00:00:00Z" \
+  --cr-end "2025-11-22T23:59:59Z" \
   --output-json device_availability.json &
 
 jamf-health-tool policy-failures \
   --policy-id 100 \
-  --since "2024-11-18T00:00:00Z" \
+  --since "2025-11-18T00:00:00Z" \
   --output-json policy_failures.json &
 
 # Wait for all to complete
@@ -416,7 +416,7 @@ jamf-health-tool patch-compliance --app "Office"    # Uses cache
    --limiting-group-id 123
 
    # Exclude offline devices
-   --cr-start "2024-11-18T00:00:00Z"
+   --cr-start "2025-11-18T00:00:00Z"
    ```
 
 2. **Run Related Commands Together**
@@ -641,7 +641,7 @@ Total: 35 seconds (31x faster!)
 
 ---
 
-**Last Updated**: November 22, 2024
+**Last Updated**: November 22, 2025
 **Version**: 3.0
 
 **Note**: This guide focuses on the core validation commands. Version 3.0 adds 10 new automation commands (cr-readiness, wake-devices, remediate-policies, etc.) that have minimal performance overhead as they primarily trigger MDM commands or process CR summary files.

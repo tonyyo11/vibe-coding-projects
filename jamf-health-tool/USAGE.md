@@ -168,7 +168,7 @@ jamf-health-tool patch-compliance \
 ```bash
 jamf-health-tool patch-compliance \
   --os-version "15.1" \
-  --cr-start "2024-11-18T00:00:00Z"
+  --cr-start "2025-11-18T00:00:00Z"
 ```
 
 **Behavior**: Only checks devices that checked in after CR start
@@ -211,7 +211,7 @@ jamf-health-tool patch-compliance \
 **JSON Structure**:
 ```json
 {
-  "generatedAt": "2024-11-22T17:00:00Z",
+  "generatedAt": "2025-11-22T17:00:00Z",
   "scope": {
     "totalDevices": 1000,
     "onlineDevices": 980,
@@ -340,7 +340,7 @@ jamf-health-tool patch-compliance \
 # Quick check to see how many devices have updated
 jamf-health-tool patch-compliance \
   --os-version "15.1" \
-  --cr-start "2024-11-18T00:00:00Z"
+  --cr-start "2025-11-18T00:00:00Z"
 ```
 
 #### Friday - Final CR Validation
@@ -354,7 +354,7 @@ jamf-health-tool \
     --os-version "15.1" \
     --app "Safari" \
     --app "Google Chrome" \
-    --cr-start "2024-11-18T00:00:00Z" \
+    --cr-start "2025-11-18T00:00:00Z" \
     --output-json /var/log/jamf-cr/friday_compliance.json
 ```
 
@@ -372,15 +372,15 @@ The `device-availability` command analyzes which devices were online and reachab
 
 ```bash
 jamf-health-tool device-availability \
-  --cr-start "2024-11-18T00:00:00Z" \
-  --cr-end "2024-11-22T23:59:59Z"
+  --cr-start "2025-11-18T00:00:00Z" \
+  --cr-end "2025-11-22T23:59:59Z"
 ```
 
 **Output**:
 ```
 Device Availability Report
 ============================================================
-CR Window: 2024-11-18T00:00:00Z → 2024-11-22T23:59:59Z
+CR Window: 2025-11-18T00:00:00Z → 2025-11-22T23:59:59Z
 Duration: 5 days
 Total Devices: 1000
 
@@ -398,8 +398,8 @@ Recommendations:
 
 ```bash
 jamf-health-tool device-availability \
-  --cr-start "2024-11-18T00:00:00Z" \
-  --cr-end "2024-11-22T23:59:59Z" \
+  --cr-start "2025-11-18T00:00:00Z" \
+  --cr-end "2025-11-22T23:59:59Z" \
   --scope-group-id 123
 ```
 
@@ -411,8 +411,8 @@ jamf-health-tool device-availability \
 
 ```bash
 jamf-health-tool device-availability \
-  --cr-start "2024-11-18T00:00:00Z" \
-  --cr-end "2024-11-22T23:59:59Z" \
+  --cr-start "2025-11-18T00:00:00Z" \
+  --cr-end "2025-11-22T23:59:59Z" \
   --min-checkin-count 3
 ```
 
@@ -426,18 +426,18 @@ jamf-health-tool device-availability \
 
 ```bash
 jamf-health-tool device-availability \
-  --cr-start "2024-11-18T00:00:00Z" \
-  --cr-end "2024-11-22T23:59:59Z" \
+  --cr-start "2025-11-18T00:00:00Z" \
+  --cr-end "2025-11-22T23:59:59Z" \
   --output-json device_availability.json
 ```
 
 **JSON Structure**:
 ```json
 {
-  "generatedAt": "2024-11-22T17:00:00Z",
+  "generatedAt": "2025-11-22T17:00:00Z",
   "crWindow": {
-    "start": "2024-11-18T00:00:00Z",
-    "end": "2024-11-22T23:59:59Z",
+    "start": "2025-11-18T00:00:00Z",
+    "end": "2025-11-22T23:59:59Z",
     "durationDays": 5
   },
   "scope": {
@@ -453,7 +453,7 @@ jamf-health-tool device-availability \
           "id": 1,
           "name": "MacBook-001",
           "serial": "C02ABC123",
-          "lastContactTime": "2024-11-22T16:45:00Z",
+          "lastContactTime": "2025-11-22T16:45:00Z",
           "checkinCount": 15
         }
       ]
@@ -483,8 +483,8 @@ jamf-health-tool device-availability \
 jamf-health-tool \
   --output-xlsx device_availability.xlsx \
   device-availability \
-    --cr-start "2024-11-18T00:00:00Z" \
-    --cr-end "2024-11-22T23:59:59Z"
+    --cr-start "2025-11-18T00:00:00Z" \
+    --cr-end "2025-11-22T23:59:59Z"
 ```
 
 **Excel Features**:
@@ -536,8 +536,8 @@ jamf-health-tool \
 ```bash
 # Snapshot of current device status
 jamf-health-tool device-availability \
-  --cr-start "2024-11-18T00:00:00Z" \
-  --cr-end "2024-11-18T00:00:00Z" \
+  --cr-start "2025-11-18T00:00:00Z" \
+  --cr-end "2025-11-18T00:00:00Z" \
   --output-json /var/log/jamf-cr/monday_availability.json
 ```
 
@@ -548,7 +548,7 @@ jamf-health-tool device-availability \
 ```bash
 # See how many devices have checked in so far
 jamf-health-tool device-availability \
-  --cr-start "2024-11-18T00:00:00Z" \
+  --cr-start "2025-11-18T00:00:00Z" \
   --cr-end "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
 ```
 
@@ -560,8 +560,8 @@ jamf-health-tool device-availability \
 jamf-health-tool \
   --output-xlsx /var/log/jamf-cr/friday_availability.xlsx \
   device-availability \
-    --cr-start "2024-11-18T00:00:00Z" \
-    --cr-end "2024-11-22T23:59:59Z" \
+    --cr-start "2025-11-18T00:00:00Z" \
+    --cr-end "2025-11-22T23:59:59Z" \
     --output-json /var/log/jamf-cr/friday_availability.json
 ```
 
@@ -584,9 +584,9 @@ It provides a single command to answer: "Is the CR successful?"
 
 ```bash
 jamf-health-tool cr-summary \
-  --cr-name "November 2024 Patching" \
-  --cr-start "2024-11-18T00:00:00Z" \
-  --cr-end "2024-11-22T23:59:59Z" \
+  --cr-name "November 2025 Patching" \
+  --cr-start "2025-11-18T00:00:00Z" \
+  --cr-end "2025-11-22T23:59:59Z" \
   --policy-id 100 --policy-id 101 \
   --target-os-version "15.1" \
   --target-app "Safari" \
@@ -597,9 +597,9 @@ jamf-health-tool cr-summary \
 **Output**:
 ```
 ======================================================================
-Change Request Summary: November 2024 Patching
+Change Request Summary: November 2025 Patching
 ======================================================================
-Window: 2024-11-18T00:00:00Z → 2024-11-22T23:59:59Z (5 days)
+Window: 2025-11-18T00:00:00Z → 2025-11-22T23:59:59Z (5 days)
 Scope: 1000 devices
 
 ┌────────────────────────────────────────────────────────────────────┐
@@ -641,9 +641,9 @@ jamf-health-tool \
   --output-xlsx /var/log/jamf-cr/cr_summary.xlsx \
   --output-pdf /var/log/jamf-cr/cr_summary.pdf \
   cr-summary \
-    --cr-name "November 2024 Comprehensive Patching" \
-    --cr-start "2024-11-18T00:00:00Z" \
-    --cr-end "2024-11-22T23:59:59Z" \
+    --cr-name "November 2025 Comprehensive Patching" \
+    --cr-start "2025-11-18T00:00:00Z" \
+    --cr-end "2025-11-22T23:59:59Z" \
     --policy-id 100 \
     --policy-id 101 \
     --policy-id 102 \
@@ -684,8 +684,8 @@ Without filtering, weekly automated policies can show inflated completion rates:
 **Default Behavior (Recommended)**:
 ```bash
 jamf-health-tool cr-summary \
-  --cr-start "2024-11-18" \
-  --cr-end "2024-11-22" \
+  --cr-start "2025-11-18" \
+  --cr-end "2025-11-22" \
   --policy-id 2573 \
   --filter-cr-window  # DEFAULT - enabled automatically
 ```
@@ -710,8 +710,8 @@ To see all policy executions regardless of timing:
 
 ```bash
 jamf-health-tool cr-summary \
-  --cr-start "2024-11-18" \
-  --cr-end "2024-11-22" \
+  --cr-start "2025-11-18" \
+  --cr-end "2025-11-22" \
   --policy-id 2573 \
   --no-filter-cr-window  # Show all runs
 ```
@@ -800,9 +800,9 @@ else:
 export TEAMS_WEBHOOK_URL="https://outlook.office.com/webhook/YOUR-WEBHOOK-URL"
 
 jamf-health-tool cr-summary \
-  --cr-name "November 2024 Patching" \
-  --cr-start "2024-11-18T00:00:00Z" \
-  --cr-end "2024-11-22T23:59:59Z" \
+  --cr-name "November 2025 Patching" \
+  --cr-start "2025-11-18T00:00:00Z" \
+  --cr-end "2025-11-22T23:59:59Z" \
   --target-os-version "15.1" \
   --teams-webhook-url "$TEAMS_WEBHOOK_URL"
 ```
@@ -863,8 +863,8 @@ Professional report suitable for management review:
 # /usr/local/bin/friday-cr-validation.sh
 
 CR_NAME="Week of $(date +%Y-%m-%d) Patching"
-CR_START="2024-11-18T00:00:00Z"
-CR_END="2024-11-22T23:59:59Z"
+CR_START="2025-11-18T00:00:00Z"
+CR_END="2025-11-22T23:59:59Z"
 OUTPUT_DIR="/var/log/jamf-cr"
 
 echo "=== Generating CR Summary: $CR_NAME ==="
@@ -915,7 +915,7 @@ The `policy-failures` command tracks which Jamf policies failed execution and on
 ```bash
 jamf-health-tool policy-failures \
   --policy-id 100 \
-  --since "2024-11-18T00:00:00Z"
+  --since "2025-11-18T00:00:00Z"
 ```
 
 **Output**:
@@ -923,15 +923,15 @@ jamf-health-tool policy-failures \
 Policy Failures Report
 ============================================================
 Policy: macOS Update (ID: 100)
-Since: 2024-11-18T00:00:00Z
+Since: 2025-11-18T00:00:00Z
 
 Failed Executions: 50
 Affected Devices: 50
 Success Rate: 95.0%
 
 Failed Devices:
-  MacBook-001 (C02ABC123) - Last Failure: 2024-11-19T10:30:00Z
-  MacBook-002 (C02ABC124) - Last Failure: 2024-11-19T11:15:00Z
+  MacBook-001 (C02ABC123) - Last Failure: 2025-11-19T10:30:00Z
+  MacBook-002 (C02ABC124) - Last Failure: 2025-11-19T11:15:00Z
   ...
 ```
 
@@ -942,7 +942,7 @@ jamf-health-tool policy-failures \
   --policy-id 100 \
   --policy-id 101 \
   --policy-id 102 \
-  --since "2024-11-18T00:00:00Z"
+  --since "2025-11-18T00:00:00Z"
 ```
 
 ### Advanced Options
@@ -952,7 +952,7 @@ jamf-health-tool policy-failures \
 ```bash
 jamf-health-tool policy-failures \
   --policy-id 100 \
-  --since "2024-11-18T00:00:00Z" \
+  --since "2025-11-18T00:00:00Z" \
   --limit 10
 ```
 
@@ -963,7 +963,7 @@ jamf-health-tool policy-failures \
 ```bash
 jamf-health-tool policy-failures \
   --policy-id 100 \
-  --since "2024-11-18T00:00:00Z" \
+  --since "2025-11-18T00:00:00Z" \
   --output-json policy_failures.json
 ```
 
@@ -987,14 +987,14 @@ The `mdm-failures` command identifies failed MDM commands across your fleet.
 
 ```bash
 jamf-health-tool mdm-failures \
-  --since "2024-11-18T00:00:00Z"
+  --since "2025-11-18T00:00:00Z"
 ```
 
 **Output**:
 ```
 MDM Failures Report
 ============================================================
-Since: 2024-11-18T00:00:00Z
+Since: 2025-11-18T00:00:00Z
 
 Total Failed Commands: 25
 Affected Devices: 15
@@ -1015,7 +1015,7 @@ Failed Devices:
 
 ```bash
 jamf-health-tool mdm-failures \
-  --since "2024-11-18T00:00:00Z" \
+  --since "2025-11-18T00:00:00Z" \
   --output-json mdm_failures.json
 ```
 
@@ -1076,9 +1076,9 @@ Missing Devices:
 #!/bin/bash
 # monday-cr-start.sh
 
-CR_NAME="November 2024 Patching"
-CR_START="2024-11-18T00:00:00Z"
-CR_END="2024-11-22T23:59:59Z"
+CR_NAME="November 2025 Patching"
+CR_START="2025-11-18T00:00:00Z"
+CR_END="2025-11-22T23:59:59Z"
 GROUP_ID="123"
 OUTPUT_DIR="/var/log/jamf-cr"
 
@@ -1125,7 +1125,7 @@ jamf-health-tool \
     --app "Safari" \
     --app "Google Chrome" \
     --limiting-group-id 123 \
-    --cr-start "2024-11-18T00:00:00Z" \
+    --cr-start "2025-11-18T00:00:00Z" \
     --output-json /var/log/jamf-cr/wednesday_progress.json
 
 echo ""
@@ -1143,9 +1143,9 @@ echo "  - Checking device availability"
 #!/bin/bash
 # friday-final-validation.sh
 
-CR_NAME="November 2024 Patching"
-CR_START="2024-11-18T00:00:00Z"
-CR_END="2024-11-22T23:59:59Z"
+CR_NAME="November 2025 Patching"
+CR_START="2025-11-18T00:00:00Z"
+CR_END="2025-11-22T23:59:59Z"
 OUTPUT_DIR="/var/log/jamf-cr"
 
 echo "=== Generating Final CR Validation Report ==="
@@ -1230,8 +1230,8 @@ Run `cr-summary` daily during CR window to track progress:
 
 jamf-health-tool cr-summary \
   --cr-name "$(date +%Y-%m-%d) Daily Check" \
-  --cr-start "2024-11-18T00:00:00Z" \
-  --cr-end "2024-11-22T23:59:59Z" \
+  --cr-start "2025-11-18T00:00:00Z" \
+  --cr-end "2025-11-22T23:59:59Z" \
   --policy-id 100 --policy-id 101 \
   --target-os-version "15.1" \
   --scope-group-id 123 \
@@ -1251,14 +1251,14 @@ Check different groups separately:
 ```bash
 # Production Macs
 jamf-health-tool cr-summary \
-  --cr-name "Prod Macs - Nov 2024" \
+  --cr-name "Prod Macs - Nov 2025" \
   --limiting-group-id 100 \
   --output-json prod_cr_summary.json \
   ...
 
 # Lab Macs
 jamf-health-tool cr-summary \
-  --cr-name "Lab Macs - Nov 2024" \
+  --cr-name "Lab Macs - Nov 2025" \
   --limiting-group-id 200 \
   --output-json lab_cr_summary.json \
   ...
@@ -1418,7 +1418,7 @@ All commands output consistent JSON for easy parsing:
 
 ```json
 {
-  "generatedAt": "2024-11-22T17:00:00Z",
+  "generatedAt": "2025-11-22T17:00:00Z",
   "scope": {
     "totalDevices": 1000,
     "onlineDevices": 980,
@@ -1464,10 +1464,10 @@ All commands output consistent JSON for easy parsing:
 
 ```json
 {
-  "generatedAt": "2024-11-22T17:00:00Z",
+  "generatedAt": "2025-11-22T17:00:00Z",
   "crWindow": {
-    "start": "2024-11-18T00:00:00Z",
-    "end": "2024-11-22T23:59:59Z",
+    "start": "2025-11-18T00:00:00Z",
+    "end": "2025-11-22T23:59:59Z",
     "durationDays": 5
   },
   "scope": {
@@ -1499,11 +1499,11 @@ All commands output consistent JSON for easy parsing:
 
 ```json
 {
-  "generatedAt": "2024-11-22T17:00:00Z",
-  "crName": "November 2024 Patching",
+  "generatedAt": "2025-11-22T17:00:00Z",
+  "crName": "November 2025 Patching",
   "crWindow": {
-    "start": "2024-11-18T00:00:00Z",
-    "end": "2024-11-22T23:59:59Z"
+    "start": "2025-11-18T00:00:00Z",
+    "end": "2025-11-22T23:59:59Z"
   },
   "successThreshold": 0.95,
   "scope": {
@@ -1671,7 +1671,7 @@ curl -X PATCH \
 
 ---
 
-**Last Updated**: November 22, 2024
+**Last Updated**: November 22, 2025
 **Version**: 3.0
 
 **Note**: For complete usage examples of v3.0 automation commands (cr-readiness, wake-devices, remediate-policies, remediate-profiles, auto-remediate, cr-compare, problem-devices, run-workflow, update-inventory, restart-devices), see CR_FEATURES.md which includes detailed workflows and examples.

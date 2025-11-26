@@ -35,7 +35,7 @@ jamf-health-tool patch-compliance \
   --app "Google Chrome:131.0.6778.86" \
   --app "Microsoft Office:16.90" \
   --limiting-group-id 123 \
-  --cr-start 2024-11-18T00:00:00Z \
+  --cr-start 2025-11-18T00:00:00Z \
   --output-json patch_compliance.json
 ```
 
@@ -153,8 +153,8 @@ Analyze which devices were actually online and reachable during your CR window.
 
 ```bash
 jamf-health-tool device-availability \
-  --cr-start 2024-11-18T00:00:00Z \
-  --cr-end 2024-11-22T23:59:59Z \
+  --cr-start 2025-11-18T00:00:00Z \
+  --cr-end 2025-11-22T23:59:59Z \
   --scope-group-id 123 \
   --output-json device_availability.json
 ```
@@ -167,8 +167,8 @@ jamf-health-tool \
   --output-xlsx availability_report.xlsx \
   --output-pdf availability_report.pdf \
   device-availability \
-    --cr-start 2024-11-18T00:00:00Z \
-    --cr-end 2024-11-22T23:59:59Z \
+    --cr-start 2025-11-18T00:00:00Z \
+    --cr-end 2025-11-22T23:59:59Z \
     --scope-group-id 123
 ```
 
@@ -176,8 +176,8 @@ jamf-health-tool \
 
 ```bash
 jamf-health-tool device-availability \
-  --cr-start 2024-11-18T00:00:00Z \
-  --cr-end 2024-11-22T23:59:59Z \
+  --cr-start 2025-11-18T00:00:00Z \
+  --cr-end 2025-11-22T23:59:59Z \
   --scope-group-id 123
 
 # Example output showing mixed macOS versions:
@@ -197,7 +197,7 @@ jamf-health-tool device-availability \
 ```
 Device Availability Report
 ============================================================
-CR Window: 2024-11-18T00:00:00Z → 2024-11-22T23:59:59Z
+CR Window: 2025-11-18T00:00:00Z → 2025-11-22T23:59:59Z
 Duration: 5 days
 Total Devices: 1000
 
@@ -244,8 +244,8 @@ By default, `cr-summary` filters policy executions to only count runs **within t
 ```bash
 # Automatically enabled - only counts policy runs within CR window
 jamf-health-tool cr-summary \
-  --cr-start 2024-11-18 \
-  --cr-end 2024-11-22 \
+  --cr-start 2025-11-18 \
+  --cr-end 2025-11-22 \
   --policy-id 2573
   # --filter-cr-window is DEFAULT
 ```
@@ -254,8 +254,8 @@ jamf-health-tool cr-summary \
 ```bash
 # Disable filtering to see full policy history
 jamf-health-tool cr-summary \
-  --cr-start 2024-11-18 \
-  --cr-end 2024-11-22 \
+  --cr-start 2025-11-18 \
+  --cr-end 2025-11-22 \
   --policy-id 2573 \
   --no-filter-cr-window  # Show all executions
 ```
@@ -266,9 +266,9 @@ jamf-health-tool cr-summary \
 
 ```bash
 jamf-health-tool cr-summary \
-  --cr-name "November 2024 Patching" \
-  --cr-start 2024-11-18T00:00:00Z \
-  --cr-end 2024-11-22T23:59:59Z \
+  --cr-name "November 2025 Patching" \
+  --cr-start 2025-11-18T00:00:00Z \
+  --cr-end 2025-11-22T23:59:59Z \
   --policy-id 100 --policy-id 101 --policy-id 102 \
   --target-os-version "14.7.1,15.1" \
   --target-app "Google Chrome:131.0.6778.86" \
@@ -286,9 +286,9 @@ jamf-health-tool \
   --output-xlsx cr_summary.xlsx \
   --output-pdf cr_summary.pdf \
   cr-summary \
-    --cr-name "November 2024 Patching" \
-    --cr-start 2024-11-18T00:00:00Z \
-    --cr-end 2024-11-22T23:59:59Z \
+    --cr-name "November 2025 Patching" \
+    --cr-start 2025-11-18T00:00:00Z \
+    --cr-end 2025-11-22T23:59:59Z \
     --policy-id 100 --policy-id 101 \
     --target-os-version "14.7.1,15.1,26.0" \
     --target-app "Safari" \
@@ -314,9 +314,9 @@ jamf-health-tool \
 **Output Example**:
 ```
 ======================================================================
-Change Request Summary: November 2024 Patching
+Change Request Summary: November 2025 Patching
 ======================================================================
-Window: 2024-11-18T00:00:00Z → 2024-11-22T23:59:59Z (5 days)
+Window: 2025-11-18T00:00:00Z → 2025-11-22T23:59:59Z (5 days)
 Scope: 1000 devices
 
 ┌────────────────────────────────────────────────────────────────────┐
@@ -567,8 +567,8 @@ jamf-health-tool cr-compare \
 ```
 CR Comparison Report
 ============================================================
-Current:  November 2024 CR (Nov 18-22)
-Previous: October 2024 CR (Oct 14-18)
+Current:  November 2025 CR (Nov 18-22)
+Previous: October 2025 CR (Oct 14-18)
 
 Overall Compliance:
   Current:  95.2% ▲ +2.1%
@@ -675,9 +675,9 @@ workflows:
     post_cr:
       - command: cr-summary
         args:
-          cr_name: "November 2024"
-          cr_start: "11-18-2024"
-          cr_end: "11-22-2024"
+          cr_name: "November 2025"
+          cr_start: "11-18-2025"
+          cr_end: "11-22-2025"
           output_html: cr_summary.html
       - command: problem-devices
         args:
@@ -803,9 +803,9 @@ Please verify:
 #!/bin/bash
 
 # Set up CR details
-CR_NAME="November 2024 Patching"
-CR_START="2024-11-18T00:00:00Z"
-CR_END="2024-11-22T23:59:59Z"
+CR_NAME="November 2025 Patching"
+CR_START="2025-11-18T00:00:00Z"
+CR_END="2025-11-22T23:59:59Z"
 POLICY_IDS="100 101 102"
 GROUP_ID="123"
 
@@ -844,7 +844,7 @@ jamf-health-tool \
     --app "Google Chrome" \
     --app "Microsoft Office" \
     --limiting-group-id 123 \
-    --cr-start "2024-11-18T00:00:00Z" \
+    --cr-start "2025-11-18T00:00:00Z" \
     --output-json /var/log/jamf-cr/wednesday_progress.json
 
 echo ""
@@ -872,9 +872,9 @@ jamf-health-tool \
   --output-xlsx /var/log/jamf-cr/cr_final_report.xlsx \
   --output-pdf /var/log/jamf-cr/cr_final_report.pdf \
   cr-summary \
-    --cr-name "November 2024 Patching" \
-    --cr-start "2024-11-18T00:00:00Z" \
-    --cr-end "2024-11-22T23:59:59Z" \
+    --cr-name "November 2025 Patching" \
+    --cr-start "2025-11-18T00:00:00Z" \
+    --cr-end "2025-11-22T23:59:59Z" \
     --policy-id 100 --policy-id 101 --policy-id 102 \
     --target-os-version "14.7.1,15.1,26.0" \
     --target-app "Safari" \
@@ -946,7 +946,7 @@ All CR commands output machine-readable JSON for automation:
 ### patch-compliance JSON
 ```json
 {
-  "generatedAt": "2024-11-22T17:00:00Z",
+  "generatedAt": "2025-11-22T17:00:00Z",
   "scope": {
     "totalDevices": 1000,
     "onlineDevices": 980,
@@ -976,10 +976,10 @@ All CR commands output machine-readable JSON for automation:
 ### device-availability JSON
 ```json
 {
-  "generatedAt": "2024-11-22T17:00:00Z",
+  "generatedAt": "2025-11-22T17:00:00Z",
   "crWindow": {
-    "start": "2024-11-18T00:00:00Z",
-    "end": "2024-11-22T23:59:59Z",
+    "start": "2025-11-18T00:00:00Z",
+    "end": "2025-11-22T23:59:59Z",
     "durationDays": 5
   },
   "scope": {
@@ -1010,8 +1010,8 @@ All CR commands output machine-readable JSON for automation:
 ### cr-summary JSON
 ```json
 {
-  "generatedAt": "2024-11-22T17:00:00Z",
-  "crName": "November 2024 Patching",
+  "generatedAt": "2025-11-22T17:00:00Z",
+  "crName": "November 2025 Patching",
   "crWindow": {...},
   "successThreshold": 0.95,
   "scope": {...},
@@ -1044,9 +1044,9 @@ All CR commands support `--teams-webhook-url` for automatic notifications:
 export TEAMS_WEBHOOK_URL="https://outlook.office.com/webhook/..."
 
 jamf-health-tool cr-summary \
-  --cr-name "November 2024 Patching" \
-  --cr-start "2024-11-18T00:00:00Z" \
-  --cr-end "2024-11-22T23:59:59Z" \
+  --cr-name "November 2025 Patching" \
+  --cr-start "2025-11-18T00:00:00Z" \
+  --cr-end "2025-11-22T23:59:59Z" \
   --policy-id 100 \
   --target-os-version "14.7.1" \
   --scope-group-id 123 \
@@ -1095,8 +1095,8 @@ Run `cr-summary` daily during CR window and track progress:
 
 jamf-health-tool cr-summary \
   --cr-name "$(date +%Y-%m-%d) Daily Check" \
-  --cr-start "2024-11-18T00:00:00Z" \
-  --cr-end "2024-11-22T23:59:59Z" \
+  --cr-start "2025-11-18T00:00:00Z" \
+  --cr-end "2025-11-22T23:59:59Z" \
   --policy-id 100 101 102 \
   --target-os-version "14.7.1" \
   --scope-group-id 123 \
@@ -1129,13 +1129,13 @@ Check different device groups separately:
 ```bash
 # Production Macs
 jamf-health-tool cr-summary \
-  --cr-name "Prod Macs - Nov 2024" \
+  --cr-name "Prod Macs - Nov 2025" \
   --limiting-group-id 100 \
   ...
 
 # Lab Macs
 jamf-health-tool cr-summary \
-  --cr-name "Lab Macs - Nov 2024" \
+  --cr-name "Lab Macs - Nov 2025" \
   --limiting-group-id 200 \
   ...
 ```
@@ -1170,7 +1170,7 @@ Authentication failed: Invalid client credentials.
 3. Test authentication separately:
    ```bash
    # Simple test command
-   jamf-health-tool device-availability --cr-start 2024-11-01T00:00:00Z --cr-end 2024-11-01T01:00:00Z
+   jamf-health-tool device-availability --cr-start 2025-11-01T00:00:00Z --cr-end 2025-11-01T01:00:00Z
    ```
 
 #### Problem: "HTTP 403 - Forbidden: API client lacks required permissions"
@@ -1358,8 +1358,8 @@ Total Devices: 0
    ```bash
    # Check all devices
    jamf-health-tool device-availability \
-     --cr-start 2024-11-01T00:00:00Z \
-     --cr-end 2024-11-22T23:59:59Z
+     --cr-start 2025-11-01T00:00:00Z \
+     --cr-end 2025-11-22T23:59:59Z
    # Don't specify --scope-group-id
    ```
 
@@ -1381,8 +1381,8 @@ Offline Devices: 1000
    ```bash
    # Is the window too old?
    jamf-health-tool device-availability \
-     --cr-start 2024-11-18T00:00:00Z \
-     --cr-end 2024-11-22T23:59:59Z
+     --cr-start 2025-11-18T00:00:00Z \
+     --cr-end 2025-11-22T23:59:59Z
 
    # Devices offline if last check-in before cr-start
    ```
@@ -1395,7 +1395,7 @@ Offline Devices: 1000
 3. **Adjust CR start time**:
    ```bash
    # Use a wider window
-   --cr-start 2024-11-01T00:00:00Z  # Earlier start
+   --cr-start 2025-11-01T00:00:00Z  # Earlier start
    ```
 
 #### Problem: "Low compliance rates (<50%)"
@@ -1410,8 +1410,8 @@ Overall Compliance: 45.2%
 1. **Check device availability first**:
    ```bash
    jamf-health-tool device-availability \
-     --cr-start 2024-11-18T00:00:00Z \
-     --cr-end 2024-11-22T23:59:59Z \
+     --cr-start 2025-11-18T00:00:00Z \
+     --cr-end 2025-11-22T23:59:59Z \
      --scope-group-id 123
 
    # If >20% offline → device availability issue
@@ -1422,7 +1422,7 @@ Overall Compliance: 45.2%
    ```bash
    jamf-health-tool policy-failures \
      --policy-id 100 \
-     --since 2024-11-18T00:00:00Z
+     --since 2025-11-18T00:00:00Z
 
    # Check for widespread failures
    ```
@@ -1469,20 +1469,20 @@ ERROR: Invalid timestamp format
 
 ```bash
 # ✅ Correct:
---cr-start "2024-11-18T00:00:00Z"
---cr-end "2024-11-22T23:59:59Z"
+--cr-start "2025-11-18T00:00:00Z"
+--cr-end "2025-11-22T23:59:59Z"
 
 # ❌ Wrong:
---cr-start "2024-11-18"  # Missing time
---cr-start "11/18/2024"  # Wrong format
---cr-start "2024-11-18 00:00:00"  # Missing T and Z
+--cr-start "2025-11-18"  # Missing time
+--cr-start "11/18/2025"  # Wrong format
+--cr-start "2025-11-18 00:00:00"  # Missing T and Z
 ```
 
 #### Problem: "No data in CR window"
 
 **Symptoms**:
 ```
-CR Window: 2024-11-18T00:00:00Z → 2024-11-22T23:59:59Z
+CR Window: 2025-11-18T00:00:00Z → 2025-11-22T23:59:59Z
 Total Devices: 1000
 Online Entire Window: 0
 ```
@@ -1499,13 +1499,13 @@ Online Entire Window: 0
    ```bash
    # All times are UTC (Z = Zulu time = UTC)
    # If your local time is EST (-5 hours):
-   # 2024-11-18T00:00:00Z = 2024-11-17T19:00:00 EST
+   # 2025-11-18T00:00:00Z = 2025-11-17T19:00:00 EST
    ```
 
 3. **Use current time for end**:
    ```bash
    # For ongoing CR:
-   --cr-start "2024-11-18T00:00:00Z" \
+   --cr-start "2025-11-18T00:00:00Z" \
    --cr-end "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
    ```
 
@@ -1600,7 +1600,7 @@ When something goes wrong, check these in order:
 5. **✅ Timestamps**
    ```bash
    # Use ISO8601 format with Z
-   --cr-start "2024-11-18T00:00:00Z"
+   --cr-start "2025-11-18T00:00:00Z"
    ```
 
 6. **✅ Dependencies**
@@ -1796,7 +1796,7 @@ Planned features (not yet implemented):
 
 ## Version History
 
-### Version 3.0 (November 2024) - Complete CR Automation
+### Version 3.0 (November 2025) - Complete CR Automation
 
 **New Commands** (10 total):
 - `cr-readiness` - Pre-flight CR validation
@@ -1828,7 +1828,7 @@ Planned features (not yet implemented):
 - Intelligent failure handling
 - Non-disruptive wake operations
 
-### Version 1.0 (November 2024) - Initial Production Release
+### Version 1.0 (November 2025) - Initial Production Release
 
 **Core Features**:
 - Six production-ready commands (`patch-compliance`, `device-availability`, `cr-summary`, `policy-failures`, `mdm-failures`, `profile-audit`)
@@ -1859,5 +1859,5 @@ Planned features (not yet implemented):
 
 ---
 
-**Last Updated**: November 22, 2024
+**Last Updated**: November 22, 2025
 **Version**: 3.0

@@ -69,7 +69,7 @@ jamf-health-tool patch-compliance --app "Safari"
 
 ```bash
 # Always use ISO8601 format with Z
---cr-start "2024-11-18T00:00:00Z"
+--cr-start "2025-11-18T00:00:00Z"
 ```
 
 ### 6. ✅ Dependencies
@@ -149,8 +149,8 @@ If you're unsure about the secret:
 ```bash
 # Simple test command
 jamf-health-tool device-availability \
-  --cr-start 2024-11-01T00:00:00Z \
-  --cr-end 2024-11-01T01:00:00Z
+  --cr-start 2025-11-01T00:00:00Z \
+  --cr-end 2025-11-01T01:00:00Z
 ```
 
 If this works, authentication is correct.
@@ -526,8 +526,8 @@ Total Devices: 0
 ```bash
 # Try without limiting group
 jamf-health-tool device-availability \
-  --cr-start 2024-11-01T00:00:00Z \
-  --cr-end 2024-11-22T23:59:59Z
+  --cr-start 2025-11-01T00:00:00Z \
+  --cr-end 2025-11-22T23:59:59Z
 # Don't specify --scope-group-id
 ```
 
@@ -571,8 +571,8 @@ Offline Devices: 1000
 ```bash
 # Is the window in the past?
 jamf-health-tool device-availability \
-  --cr-start "2024-11-18T00:00:00Z" \
-  --cr-end "2024-11-22T23:59:59Z"
+  --cr-start "2025-11-18T00:00:00Z" \
+  --cr-end "2025-11-22T23:59:59Z"
 
 # Current date should be after cr-end
 date -u
@@ -591,7 +591,7 @@ If devices show recent check-ins in Jamf but appear offline in the tool, there m
 
 ```bash
 # Use a wider window
---cr-start 2024-11-01T00:00:00Z  # Earlier start
+--cr-start 2025-11-01T00:00:00Z  # Earlier start
 ```
 
 **Step 4: Check for MDM Issues**
@@ -628,8 +628,8 @@ CR window filtering is enabled by default, which prevents this issue:
 
 ```bash
 jamf-health-tool cr-summary \
-  --cr-start "2024-11-18" \
-  --cr-end "2024-11-22" \
+  --cr-start "2025-11-18" \
+  --cr-end "2025-11-22" \
   --policy-id 2573
   # --filter-cr-window is enabled by default
 ```
@@ -669,8 +669,8 @@ Overall Compliance: 45.2%
 
 ```bash
 jamf-health-tool device-availability \
-  --cr-start "2024-11-18T00:00:00Z" \
-  --cr-end "2024-11-22T23:59:59Z" \
+  --cr-start "2025-11-18T00:00:00Z" \
+  --cr-end "2025-11-22T23:59:59Z" \
   --scope-group-id 123
 ```
 
@@ -683,7 +683,7 @@ jamf-health-tool device-availability \
 ```bash
 jamf-health-tool policy-failures \
   --policy-id 100 \
-  --since 2024-11-18T00:00:00Z
+  --since 2025-11-18T00:00:00Z
 ```
 
 Check for widespread failures.
@@ -744,20 +744,20 @@ Always use **ISO8601 with UTC timezone**:
 
 ```bash
 # ✅ Correct:
---cr-start "2024-11-18T00:00:00Z"
---cr-end "2024-11-22T23:59:59Z"
+--cr-start "2025-11-18T00:00:00Z"
+--cr-end "2025-11-22T23:59:59Z"
 
 # ❌ Wrong:
---cr-start "2024-11-18"              # Missing time
---cr-start "11/18/2024"              # Wrong format
---cr-start "2024-11-18 00:00:00"     # Missing T and Z
---cr-start "2024-11-18T00:00:00+00:00"  # Use Z instead
+--cr-start "2025-11-18"              # Missing time
+--cr-start "11/18/2025"              # Wrong format
+--cr-start "2025-11-18 00:00:00"     # Missing T and Z
+--cr-start "2025-11-18T00:00:00+00:00"  # Use Z instead
 ```
 
 #### Format Breakdown
 
 ```
-2024-11-18T00:00:00Z
+2025-11-18T00:00:00Z
 │    │  │ │  │  │  └─ UTC timezone (Z = Zulu = UTC)
 │    │  │ │  │  └──── Seconds
 │    │  │ │  └─────── Minutes
@@ -774,7 +774,7 @@ Always use **ISO8601 with UTC timezone**:
 #### Symptoms
 
 ```
-CR Window: 2024-11-18T00:00:00Z → 2024-11-22T23:59:59Z
+CR Window: 2025-11-18T00:00:00Z → 2025-11-22T23:59:59Z
 Total Devices: 1000
 Online Entire Window: 0
 ```
@@ -794,7 +794,7 @@ All times are UTC (Z = Zulu time = UTC):
 
 ```bash
 # If your local time is EST (-5 hours from UTC):
-# 2024-11-18T00:00:00Z = 2024-11-17T19:00:00 EST
+# 2025-11-18T00:00:00Z = 2025-11-17T19:00:00 EST
 ```
 
 Devices checking in at "Nov 18, 1:00 AM EST" actually checked in at "Nov 18, 6:00 AM UTC".
@@ -803,7 +803,7 @@ Devices checking in at "Nov 18, 1:00 AM EST" actually checked in at "Nov 18, 6:0
 
 ```bash
 # For ongoing CR, use current time as end
---cr-start "2024-11-18T00:00:00Z" \
+--cr-start "2025-11-18T00:00:00Z" \
 --cr-end "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
 ```
 
@@ -1075,7 +1075,7 @@ cat error.log
 
 ---
 
-**Last Updated**: November 22, 2024
+**Last Updated**: November 22, 2025
 **Version**: 3.0
 
 **Note**: This guide applies to all 16 commands (6 validation + 10 automation commands). Version 3.0 automation commands (cr-readiness, wake-devices, remediate-policies, remediate-profiles, auto-remediate, cr-compare, problem-devices, run-workflow, update-inventory, restart-devices) follow the same authentication and troubleshooting patterns.

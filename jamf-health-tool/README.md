@@ -13,7 +13,7 @@ The Jamf Health Tool provides production-ready CR validation capabilities, allow
 - ⚡ **98% Faster** - Optimized API usage (1 call vs 1000 for app compliance)
 - 🚀 **Concurrent API Calls** - 10x faster profile fetching with configurable parallelism
 - 💾 **Smart Caching** - Persistent local cache reduces redundant API calls
-- 📅 **Flexible Dates** - Simple date formats (11-22-2024) instead of ISO8601
+- 📅 **Flexible Dates** - Simple date formats (11-22-2025) instead of ISO8601
 - 🔍 **Auto-Discovery** - Finds applications without Patch Management entries
 - 🛠️ **Full Remediation Suite** - Policies, profiles, MDM commands with intelligent retry
 - 🎯 **Pre-Flight Checks** - Validate device readiness before CR windows
@@ -158,8 +158,8 @@ concurrency:
 ```bash
 # Simple test to verify authentication (flexible date formats!)
 jamf-health-tool device-availability \
-  --cr-start 11-01-2024 \
-  --cr-end 11-01-2024
+  --cr-start 11-01-2025 \
+  --cr-end 11-01-2025
 ```
 
 ### 4. Check Patch Compliance
@@ -184,9 +184,9 @@ jamf-health-tool patch-compliance \
 ```bash
 # Complete CR validation (flexible dates!)
 jamf-health-tool cr-summary \
-  --cr-name "November 2024 Patching" \
-  --cr-start 11-18-2024 \
-  --cr-end 11-22-2024 \
+  --cr-name "November 2025 Patching" \
+  --cr-start 11-18-2025 \
+  --cr-end 11-22-2025 \
   --policy-id 100 --policy-id 101 \
   --target-os-version "15.1" \
   --target-app "Safari" \
@@ -309,9 +309,9 @@ Beautiful, responsive HTML reports (no dependencies needed!):
 ```bash
 # Add --output-html to any report command
 jamf-health-tool cr-summary \
-  --cr-name "November 2024" \
-  --cr-start 11-15-2024 \
-  --cr-end 11-22-2024 \
+  --cr-name "November 2025" \
+  --cr-start 11-15-2025 \
+  --cr-end 11-22-2025 \
   --output-html report.html
 
 # Features:
@@ -371,14 +371,14 @@ No more complicated ISO8601 timestamps! Use simple dates:
 
 ```bash
 # Old way
---cr-start "2024-11-18T00:00:00Z" --cr-end "2024-11-22T23:59:59Z"
+--cr-start "2025-11-18T00:00:00Z" --cr-end "2025-11-22T23:59:59Z"
 
 # New way - much easier!
---cr-start 11-18-2024 --cr-end 11-22-2024
+--cr-start 11-18-2025 --cr-end 11-22-2025
 
 # Also supported
---cr-start 2024-11-18   # ISO format without time
---cr-start 11/18/2024   # US format with slashes
+--cr-start 2025-11-18   # ISO format without time
+--cr-start 11/18/2025   # US format with slashes
 ```
 
 ### 🔍 Application Auto-Discovery
@@ -501,8 +501,8 @@ jamf-health-tool patch-compliance \
 
 ```bash
 jamf-health-tool device-availability \
-  --cr-start "2024-11-18T00:00:00Z" \
-  --cr-end "2024-11-22T23:59:59Z" \
+  --cr-start "2025-11-18T00:00:00Z" \
+  --cr-end "2025-11-22T23:59:59Z" \
   --scope-group-id 123
 ```
 
@@ -514,8 +514,8 @@ jamf-health-tool device-availability \
 ```bash
 jamf-health-tool cr-summary \
   --cr-name "Weekly Patching" \
-  --cr-start "2024-11-18T00:00:00Z" \
-  --cr-end "2024-11-22T23:59:59Z" \
+  --cr-start "2025-11-18T00:00:00Z" \
+  --cr-end "2025-11-22T23:59:59Z" \
   --policy-id 100 --policy-id 101 \
   --target-os-version "15.1" \
   --target-app "Safari" \
@@ -530,7 +530,7 @@ jamf-health-tool cr-summary \
 ```bash
 jamf-health-tool policy-failures \
   --policy-id 100 \
-  --since "2024-11-18T00:00:00Z"
+  --since "2025-11-18T00:00:00Z"
 ```
 
 **Exit Codes**: 0 = no failures, 2 = failures found, 3 = error
@@ -539,7 +539,7 @@ jamf-health-tool policy-failures \
 
 ```bash
 jamf-health-tool mdm-failures \
-  --since "2024-11-18T00:00:00Z"
+  --since "2025-11-18T00:00:00Z"
 ```
 
 **Exit Codes**: 0 = no failures, 2 = failures found, 3 = error
@@ -567,8 +567,8 @@ jamf-health-tool \
   --output-xlsx compliance_report.xlsx \
   cr-summary \
     --cr-name "Weekly Patching" \
-    --cr-start "2024-11-18T00:00:00Z" \
-    --cr-end "2024-11-22T23:59:59Z" \
+    --cr-start "2025-11-18T00:00:00Z" \
+    --cr-end "2025-11-22T23:59:59Z" \
     --target-os-version "15.1"
 ```
 
@@ -583,8 +583,8 @@ jamf-health-tool \
   --output-pdf compliance_report.pdf \
   cr-summary \
     --cr-name "Weekly Patching" \
-    --cr-start "2024-11-18T00:00:00Z" \
-    --cr-end "2024-11-22T23:59:59Z" \
+    --cr-start "2025-11-18T00:00:00Z" \
+    --cr-end "2025-11-22T23:59:59Z" \
     --target-os-version "15.1"
 ```
 
@@ -636,8 +636,8 @@ All commands use consistent exit codes for automation:
 
 jamf-health-tool cr-summary \
   --cr-name "Weekly Patching" \
-  --cr-start "2024-11-18T00:00:00Z" \
-  --cr-end "2024-11-22T23:59:59Z" \
+  --cr-start "2025-11-18T00:00:00Z" \
+  --cr-end "2025-11-22T23:59:59Z" \
   --target-os-version "15.1" \
   --success-threshold 0.95
 
@@ -712,12 +712,35 @@ For detailed information, see:
 
 ## Changelog
 
-### Version 2.0 (November 2024)
+### Version 3.1 (November 2025)
+
+**Bug Fixes & Report Enhancements**
+
+**Critical Bug Fix**:
+- 🐛 **CR Window Filtering** - Fixed 0% completion rate issue when policies ran outside CR window
+  - Added intelligent fallback logic to use most recent run when no CR-window runs exist
+  - Maintains deduplication to prevent >100% completion rates
+  - More accurate representation of actual policy execution status
+
+**New Features**:
+- 📝 **Contextual Report Text** - All report formats now include executive summary-style explanations
+  - HTML, PDF, and Excel reports explain what numbers mean
+  - Dynamic text adapts to command flags (e.g., `--filter-cr-window`)
+  - Clarifies scope, CR windows, and version comparison logic
+  - Helps non-technical stakeholders understand reports without documentation
+  - ~200 lines of explanatory text across all formats
+
+**Enhanced User Experience**:
+- Reports are now self-documenting for management presentations
+- Reduced confusion about what completion rates represent
+- Professional presentation suitable for change advisory boards
+
+### Version 2.0 (November 2025)
 
 **Major Feature Release**
 
 **New Features**:
-- 🎉 **Flexible Date Formats** - Simple dates (11-22-2024) instead of ISO8601
+- 🎉 **Flexible Date Formats** - Simple dates (11-22-2025) instead of ISO8601
 - 🎉 **Application Auto-Discovery** - Finds apps without Patch Management entries
 - 🎉 **MDM Command Remediation** - Clear failed commands and repush profiles
 - 🎉 **Persistent Local Caching** - Cache API responses for faster operations
@@ -747,7 +770,7 @@ For detailed information, see:
 - ✅ Detailed progress logging for concurrent operations
 - ✅ Clear cache statistics and management
 
-### Version 1.0 (November 2024)
+### Version 1.0 (November 2025)
 
 **Initial Production Release**
 
@@ -802,6 +825,6 @@ See LICENSE file for details.
 
 ---
 
-**Last Updated**: November 22, 2024
+**Last Updated**: November 22, 2025
 **Version**: 2.0
 **Status**: ✅ Production Ready

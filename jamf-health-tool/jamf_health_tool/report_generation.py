@@ -419,6 +419,30 @@ def _generate_policy_section_html(data: Dict[str, Any]) -> str:
     if not policies:
         return ''
 
+    # Build explanatory text based on filtering mode
+    filter_enabled = data.get('filterToCrWindow', True)
+    cr_window = data.get('crWindow', {})
+    cr_start = cr_window.get('start', 'N/A')
+    cr_end = cr_window.get('end', 'N/A')
+
+    if filter_enabled:
+        explanation = f"""
+        <p style="margin-bottom: 15px; color: #666; font-size: 0.95em;">
+            <strong>How to Read:</strong> Numbers reflect devices within the policy's scope that executed the policy.
+            Policy executions are filtered to the CR window ({cr_start} to {cr_end}), showing only the most recent
+            execution per device to prevent counting multiple runs. Devices offline during the CR window are excluded
+            from completion rates but listed separately.
+        </p>
+        """
+    else:
+        explanation = f"""
+        <p style="margin-bottom: 15px; color: #666; font-size: 0.95em;">
+            <strong>How to Read:</strong> Numbers reflect all policy executions regardless of when they occurred.
+            This view shows complete execution history and may display completion rates >100% when policies run
+            multiple times. Use --filter-cr-window for accurate CR validation rates.
+        </p>
+        """
+
     rows = []
     for policy in policies:
         total = policy.get('devicesInScope', 0)
@@ -442,6 +466,7 @@ def _generate_policy_section_html(data: Dict[str, Any]) -> str:
     return f"""
     <section>
         <h2>Policy Execution Results</h2>
+        {explanation}
         <table>
             <thead>
                 <tr>
@@ -472,6 +497,24 @@ def _generate_compliance_section_html(data: Dict[str, Any]) -> str:
     if not targets:
         return ''
 
+    # Build explanatory text
+    scope = data.get('scope', {})
+    scope_group = scope.get('groupName', None)
+
+    if scope_group:
+        scope_text = f"limited to devices in the '{scope_group}' group"
+    else:
+        scope_text = "across all managed devices"
+
+    explanation = f"""
+    <p style="margin-bottom: 15px; color: #666; font-size: 0.95em;">
+        <strong>How to Read:</strong> Compliance is calculated based on devices in scope that have each application
+        installed {scope_text}. A device is considered compliant when its installed version is greater than or equal to
+        the minimum required version shown. Devices without the application installed are not counted in compliance calculations.
+        For OS targets, all devices in scope are included in the total count.
+    </p>
+    """
+
     rows = []
     for target_result in targets:
         target_info = target_result.get('target', {})
@@ -495,6 +538,7 @@ def _generate_compliance_section_html(data: Dict[str, Any]) -> str:
     <section>
         <h2>Patch Compliance</h2>
         <p><strong>Overall Compliance:</strong> {patch.get('overallCompliance', 0):.1f}%</p>
+        {explanation}
         <table>
             <thead>
                 <tr>
@@ -524,9 +568,25 @@ def _generate_availability_section_html(data: Dict[str, Any]) -> str:
     online = avail.get('onlineDuringWindow', {})
     offline = avail.get('offlineDuringWindow', {})
 
+    # Build explanatory text
+    cr_window = data.get('crWindow', {})
+    cr_start = cr_window.get('start', 'N/A')
+    cr_end = cr_window.get('end', 'N/A')
+
+    explanation = f"""
+    <p style="margin-bottom: 15px; color: #666; font-size: 0.95em;">
+        <strong>How to Read:</strong> Device availability shows which devices checked in with Jamf Pro during
+        the CR window ({cr_start} to {cr_end}). Devices are considered "online" if they successfully checked in
+        at least once during this period. Devices that did not check in may be powered off, disconnected from
+        the network, or no longer in service. Offline devices are excluded from policy execution completion rates
+        but may still appear in scope counts depending on policy configuration.
+    </p>
+    """
+
     return f"""
     <section>
         <h2>Device Availability</h2>
+        {explanation}
         <table>
             <thead>
                 <tr>
@@ -765,11 +825,36 @@ def _create_policy_sheet(wb: Workbook, data: Dict[str, Any]) -> None:
     """Create policy execution results sheet."""
     ws = wb.create_sheet("Policy Execution")
 
+    # Add explanatory text
+    filter_enabled = data.get('filterToCrWindow', True)
+    cr_window = data.get('crWindow', {})
+    cr_start = cr_window.get('start', 'N/A')
+    cr_end = cr_window.get('end', 'N/A')
+
+    ws['A1'] = "Policy Execution Results"
+    ws['A1'].font = Font(bold=True, size=14)
+    ws.merge_cells('A1:I1')
+
+    if filter_enabled:
+        explanation = (f"Policy executions filtered to CR window ({cr_start} to {cr_end}). "
+                      "Shows most recent execution per device to prevent counting multiple runs. "
+                      "Offline devices excluded from completion rates.")
+    else:
+        explanation = ("All policy executions shown regardless of timing. "
+                      "May display >100% completion when policies run multiple times.")
+
+    ws['A2'] = explanation
+    ws['A2'].font = Font(italic=True, size=10, color="666666")
+    ws['A2'].alignment = Alignment(wrap_text=True)
+    ws.merge_cells('A2:I2')
+    ws.row_dimensions[2].height = 30
+
     # Headers
+    row = 4
     headers = ["Policy ID", "Policy Name", "Enabled", "Devices in Scope",
                "Completed", "Failed", "Pending", "Offline", "Success Rate"]
     for col, header in enumerate(headers, 1):
-        cell = ws.cell(row=1, column=col, value=header)
+        cell = ws.cell(row=row, column=col, value=header)
         cell.font = Font(bold=True, color="FFFFFF")
         cell.fill = PatternFill(start_color="1F4E78", end_color="1F4E78", fill_type="solid")
         cell.alignment = Alignment(horizontal='center')
@@ -778,7 +863,7 @@ def _create_policy_sheet(wb: Workbook, data: Dict[str, Any]) -> None:
     policy_exec = data.get('policyExecution', {})
     policies = policy_exec.get('summary', [])
 
-    row = 2
+    row = 5  # Start after title, explanation, blank row, and headers
     for policy in policies:
         ws.cell(row=row, column=1, value=policy.get('policyId'))
         ws.cell(row=row, column=2, value=policy.get('policyName'))
@@ -825,7 +910,26 @@ def _create_compliance_sheet(wb: Workbook, data: Dict[str, Any]) -> None:
     ws['A1'] = "Patch Compliance Summary"
     ws['A1'].font = Font(bold=True, size=14)
 
-    row = 3
+    # Add explanatory text
+    scope = data.get('scope', {})
+    scope_group = scope.get('groupName', None)
+
+    if scope_group:
+        scope_text = f"limited to devices in the '{scope_group}' group"
+    else:
+        scope_text = "across all managed devices"
+
+    explanation = (f"Compliance calculated for devices in scope {scope_text}. "
+                  "Devices are compliant when installed version >= minimum required version. "
+                  "Devices without the application installed are not counted (except OS targets).")
+
+    ws['A2'] = explanation
+    ws['A2'].font = Font(italic=True, size=10, color="666666")
+    ws['A2'].alignment = Alignment(wrap_text=True)
+    ws.merge_cells('A2:G2')
+    ws.row_dimensions[2].height = 30
+
+    row = 4
     ws[f'A{row}'] = "Overall Compliance:"
     ws[f'A{row}'].font = Font(bold=True)
     compliance = patch.get('overallCompliance', 0)
@@ -883,7 +987,22 @@ def _create_availability_sheet(wb: Workbook, data: Dict[str, Any]) -> None:
     ws['A1'] = "Device Availability During CR Window"
     ws['A1'].font = Font(bold=True, size=14)
 
-    row = 3
+    # Add explanatory text
+    cr_window = data.get('crWindow', {})
+    cr_start = cr_window.get('start', 'N/A')
+    cr_end = cr_window.get('end', 'N/A')
+
+    explanation = (f"Devices checked in during CR window ({cr_start} to {cr_end}). "
+                  "Online = checked in at least once during window. "
+                  "Offline devices excluded from policy completion rates.")
+
+    ws['A2'] = explanation
+    ws['A2'].font = Font(italic=True, size=10, color="666666")
+    ws['A2'].alignment = Alignment(wrap_text=True)
+    ws.merge_cells('A2:D2')
+    ws.row_dimensions[2].height = 30
+
+    row = 4
     scope = data.get('scope', {})
     ws[f'A{row}'] = "Total Devices:"
     ws[f'A{row}'].font = Font(bold=True)
@@ -1150,6 +1269,24 @@ def _add_pdf_policy_section(story, data, styles, heading_style):
         story.append(Paragraph("No policy execution data available.", styles['Normal']))
         return
 
+    # Add explanatory text
+    filter_enabled = data.get('filterToCrWindow', True)
+    cr_window = data.get('crWindow', {})
+    cr_start = cr_window.get('start', 'N/A')
+    cr_end = cr_window.get('end', 'N/A')
+
+    if filter_enabled:
+        explanation = (f"Policy executions are filtered to the CR window ({cr_start} to {cr_end}), "
+                      "showing only the most recent execution per device to prevent counting multiple runs. "
+                      "Offline devices are excluded from completion rates but listed separately.")
+    else:
+        explanation = ("All policy executions are shown regardless of when they occurred. "
+                      "This view shows complete execution history and may display completion rates >100% "
+                      "when policies run multiple times.")
+
+    story.append(Paragraph(f"<i>{explanation}</i>", styles['Normal']))
+    story.append(Spacer(1, 0.2*inch))
+
     # Build table
     table_data = [["Policy ID", "Policy Name", "In Scope", "Completed", "Failed", "Success Rate"]]
 
@@ -1210,6 +1347,23 @@ def _add_pdf_compliance_section(story, data, styles, heading_style):
         story.append(Paragraph("No patch compliance data available.", styles['Normal']))
         return
 
+    # Add explanatory text
+    scope = data.get('scope', {})
+    scope_group = scope.get('groupName', None)
+
+    if scope_group:
+        scope_text = f"limited to devices in the '{scope_group}' group"
+    else:
+        scope_text = "across all managed devices"
+
+    explanation = (f"Compliance is calculated based on devices in scope {scope_text}. "
+                  "A device is considered compliant when its installed version is greater than or equal to "
+                  "the minimum required version. Devices without the application installed are not counted "
+                  "in compliance calculations (except for OS targets).")
+
+    story.append(Paragraph(f"<i>{explanation}</i>", styles['Normal']))
+    story.append(Spacer(1, 0.2*inch))
+
     # Overall compliance
     compliance = patch.get('overallCompliance', 0)
     story.append(Paragraph(f"<b>Overall Compliance:</b> {compliance:.1f}%", styles['Normal']))
@@ -1259,6 +1413,19 @@ def _add_pdf_availability_section(story, data, styles, heading_style):
     if not avail:
         story.append(Paragraph("No device availability data available.", styles['Normal']))
         return
+
+    # Add explanatory text
+    cr_window = data.get('crWindow', {})
+    cr_start = cr_window.get('start', 'N/A')
+    cr_end = cr_window.get('end', 'N/A')
+
+    explanation = (f"Device availability shows which devices checked in with Jamf Pro during the CR window "
+                  f"({cr_start} to {cr_end}). Devices are considered 'online' if they successfully checked in "
+                  "at least once during this period. Offline devices are excluded from policy execution "
+                  "completion rates.")
+
+    story.append(Paragraph(f"<i>{explanation}</i>", styles['Normal']))
+    story.append(Spacer(1, 0.2*inch))
 
     # Availability breakdown
     table_data = [["Category", "Count", "Percentage"]]

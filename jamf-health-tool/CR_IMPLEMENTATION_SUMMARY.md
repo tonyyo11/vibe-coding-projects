@@ -209,7 +209,7 @@ tests/test_profile_audit.py .                                            [100%]
 
 ### Comprehensive Live API Testing
 
-**✅ Comprehensive Live API Testing** (November 22, 2024)
+**✅ Comprehensive Live API Testing** (November 22, 2025)
 
 **Test Environment**:
 - Jamf Pro: 11.23.0 (production instance)
@@ -230,7 +230,7 @@ tests/test_profile_audit.py .                                            [100%]
 
 2. **Device Availability** ✅
    ```bash
-   jamf-health-tool device-availability --cr-start 2024-10-01T00:00:00Z --cr-end 2024-11-22T23:59:59Z
+   jamf-health-tool device-availability --cr-start 2025-10-01T00:00:00Z --cr-end 2025-11-22T23:59:59Z
    ```
    - Result: 4/4 devices online entire window
    - JSON output verified
@@ -238,7 +238,7 @@ tests/test_profile_audit.py .                                            [100%]
 
 3. **CR Summary** ✅
    ```bash
-   jamf-health-tool cr-summary --cr-name "Test CR" --cr-start 2024-10-01T00:00:00Z --cr-end 2024-11-22T23:59:59Z
+   jamf-health-tool cr-summary --cr-name "Test CR" --cr-start 2025-10-01T00:00:00Z --cr-end 2025-11-22T23:59:59Z
    ```
    - Result: CR successful
    - All output formats tested (JSON, XLSX, PDF)
@@ -335,17 +335,17 @@ jamf-health-tool patch-compliance \
 ### Device Availability Analysis
 ```bash
 jamf-health-tool device-availability \
-  --cr-start 2024-11-18T00:00:00Z \
-  --cr-end 2024-11-22T23:59:59Z \
+  --cr-start 2025-11-18T00:00:00Z \
+  --cr-end 2025-11-22T23:59:59Z \
   --scope-group-id 123
 ```
 
 ### Complete CR Validation
 ```bash
 jamf-health-tool cr-summary \
-  --cr-name "November 2024 Patching" \
-  --cr-start 2024-11-18T00:00:00Z \
-  --cr-end 2024-11-22T23:59:59Z \
+  --cr-name "November 2025 Patching" \
+  --cr-start 2025-11-18T00:00:00Z \
+  --cr-end 2025-11-22T23:59:59Z \
   --policy-id 100 --policy-id 101 \
   --target-os-version "14.7.1" \
   --target-app "Google Chrome:131.0" \
@@ -648,7 +648,7 @@ These can be implemented in future iterations based on user feedback and demand.
 
 ## Version History
 
-### Version 3.0 (November 2024) - Complete CR Automation
+### Version 3.0 (November 2025) - Complete CR Automation
 
 **New Commands** (10 total):
 - `cr-readiness` - Pre-flight CR validation (readiness checking)
@@ -711,7 +711,7 @@ These can be implemented in future iterations based on user feedback and demand.
 - CLI integration verified
 - Workflow examples validated
 
-### Version 1.0 (November 2024) - Initial Production Release
+### Version 1.0 (November 2025) - Initial Production Release
 
 **Core Commands**:
 - `patch-compliance` - OS and application version validation
@@ -839,8 +839,8 @@ export JAMF_CLIENT_SECRET="your-client-secret"
 # Validate CR
 jamf-health-tool cr-summary \
   --cr-name "My First CR" \
-  --cr-start "2024-11-18T00:00:00Z" \
-  --cr-end "2024-11-22T23:59:59Z" \
+  --cr-start "2025-11-18T00:00:00Z" \
+  --cr-end "2025-11-22T23:59:59Z" \
   --target-os-version "15.1" \
   --target-app "Safari" \
   --success-threshold 0.95
@@ -850,6 +850,85 @@ See **README.md** and **CR_FEATURES.md** for complete documentation.
 
 ---
 
-**Last Updated**: November 22, 2024
-**Version**: 3.0
+## v3.1 Updates (November 2025)
+
+### Critical Bug Fix: CR Window Filtering Fallback Logic
+
+**Problem**: When `--filter-cr-window` was enabled, policy executions that occurred outside the CR window resulted in all devices showing 0% completion rates instead of their actual status.
+
+**Root Cause**: The filtering logic in `_classify_history()` (policy_failures.py:115-184) was too strict. It would:
+1. Filter policy runs to only those within the CR window
+2. If NO runs occurred within the window, immediately mark device as "pending"
+3. This meant devices that ran policies before or after the CR window showed as "pending" (0% completion)
+
+**Fix Applied**: Implemented intelligent fallback logic:
+- Still filters to CR window when runs exist within that window (prevents >100% rates from multiple runs)
+- **NEW**: If no runs exist within CR window, uses most recent run overall to show actual status
+- This maintains the deduplication benefit while showing accurate completion status
+- Devices are only marked "pending" if they truly never ran the policy
+
+**Impact**:
+- Fixes production issue where all policies showed 0% completion
+- Preserves >100% rate prevention from deduplication
+- More accurate representation of policy execution status
+- Better aligns with user expectations for CR validation
+
+**Files Modified**:
+- `policy_failures.py` - Updated `_classify_history()` function with fallback logic
+- `cr_summary.py` - Added `filterToCrWindow` field to JSON output for report transparency
+
+### Enhancement: Contextual Explanatory Text in Reports
+
+**Feature**: All report formats (HTML, PDF, Excel) now include executive summary-style explanatory text to help non-technical stakeholders understand what they're viewing.
+
+**What Was Added**:
+
+**HTML Reports** (`report_generation.py`):
+- Policy Execution section: Dynamic explanation based on `filterToCrWindow` setting
+  - Filtered mode: Explains CR window filtering, deduplication, offline device handling
+  - Unfiltered mode: Warns about potential >100% completion rates
+- Patch Compliance section: Explains version comparison logic, scope, and which devices are counted
+- Device Availability section: Defines "online" vs "offline", shows CR window context
+
+**Excel Reports**:
+- Title rows and explanatory text added to each worksheet
+- Policy Execution: Dynamic text explaining filtering mode and what numbers represent
+- Patch Compliance: Scope-aware explanation with version comparison details
+- Device Availability: CR window dates and online/offline definitions
+- Text formatted with italic styling and wrapped for readability
+
+**PDF Reports**:
+- Italic explanatory paragraphs before each data table
+- Policy Execution: Dynamic based on filtering mode
+- Patch Compliance: Scope context and compliance calculation details
+- Device Availability: Check-in requirements and relationship to completion rates
+
+**Benefits**:
+- Non-technical stakeholders can understand reports without consulting documentation
+- Dynamic content adapts to command-line flags (e.g., `--filter-cr-window` vs not)
+- Clarifies how scope, CR windows, and version comparisons affect results
+- Reduces questions and confusion about report contents
+- Professional presentation suitable for management and change advisory boards
+
+**Files Modified**:
+- `report_generation.py` - Added explanatory text to all report generation functions:
+  - `_generate_policy_section_html()` (lines 422-444)
+  - `_generate_compliance_section_html()` (lines 500-516)
+  - `_generate_availability_section_html()` (lines 571-584)
+  - `_create_policy_sheet()` (lines 828-850)
+  - `_create_compliance_sheet()` (lines 913-930)
+  - `_create_availability_sheet()` (lines 990-1003)
+  - `_add_pdf_policy_section()` (lines 1272-1288)
+  - `_add_pdf_compliance_section()` (lines 1350-1365)
+  - `_add_pdf_availability_section()` (lines 1417-1428)
+- `cr_summary.py` - Added `filterToCrWindow` to results dict for dynamic report text
+
+**Lines of Code**:
+- ~200 lines of explanatory text and formatting across all report formats
+- Minimal performance impact (text generation is negligible)
+
+---
+
+**Last Updated**: November 25, 2025
+**Version**: 3.1
 **Status**: ✅ **PRODUCTION READY**

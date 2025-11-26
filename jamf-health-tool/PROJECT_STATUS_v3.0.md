@@ -1,6 +1,6 @@
 # Jamf Health Tool v3.0 - Project Completion Status
 
-**Completion Date:** November 22, 2024  
+**Completion Date:** November 22, 2025  
 **Status:** ✅ **PRODUCTION READY**
 
 ---
@@ -242,8 +242,8 @@ jamf-health-tool patch-compliance --os-version "15.1"
 
 # Test 2: Device availability
 jamf-health-tool device-availability \
-  --cr-start "2024-11-18T00:00:00Z" \
-  --cr-end "2024-11-22T23:59:59Z"
+  --cr-start "2025-11-18T00:00:00Z" \
+  --cr-end "2025-11-22T23:59:59Z"
 
 # Test 3: CR readiness
 jamf-health-tool cr-readiness --scope-group-id <test-group>
@@ -382,7 +382,19 @@ python3 -m pytest tests/ -v
 
 ## Version History
 
-### v3.0 (November 22, 2024) - Complete CR Automation
+### v3.1 (November 25, 2025) - Bug Fixes & Report Enhancements
+- **Critical Bug Fix**: CR window filtering fallback logic
+  - Fixed 0% completion rate issue when policies ran outside CR window
+  - Intelligent fallback uses most recent run when no CR-window runs exist
+  - Maintains deduplication to prevent >100% rates
+- **New Feature**: Contextual explanatory text in all report formats
+  - HTML, PDF, and Excel reports now include executive summary-style explanations
+  - Dynamic text adapts to command flags (e.g., `--filter-cr-window`)
+  - Helps non-technical stakeholders understand report contents
+  - ~200 lines of new explanatory text across all formats
+- Production-tested and deployed
+
+### v3.0 (November 22, 2025) - Complete CR Automation
 - Added 10 new commands
 - Implemented workflow automation
 - Added HTML report generation
@@ -390,7 +402,7 @@ python3 -m pytest tests/ -v
 - Added historical trend analysis
 - 38 unit tests passing
 
-### v1.0 (November 2024) - Initial Release
+### v1.0 (November 2025) - Initial Release
 - 6 core validation commands
 - Patch Report API optimization
 - Multi-format output (JSON, Excel, PDF)
@@ -401,16 +413,16 @@ python3 -m pytest tests/ -v
 
 ## Project Completion Summary
 
-**Development Status:** ✅ COMPLETE  
-**Testing Status:** ✅ COMPLETE (38/38 passing)  
-**Documentation Status:** ✅ COMPLETE (6,000+ lines)  
+**Development Status:** ✅ COMPLETE
+**Testing Status:** ✅ COMPLETE (38/38 passing)
+**Documentation Status:** ✅ COMPLETE (6,200+ lines)
 **Production Readiness:** ✅ READY
 
 **Total Development Effort:**
 - 16 production commands
 - 10 core modules (~5,000 lines of code)
-- 7 new modules (~2,000 lines of new code)
-- 6 documentation files (6,000+ lines)
+- 7 new modules (~2,200 lines of new code)
+- 6 documentation files (6,200+ lines)
 - 38 unit tests
 - Complete test outputs
 
@@ -418,6 +430,6 @@ python3 -m pytest tests/ -v
 
 ---
 
-**Last Updated:** November 22, 2024  
-**Version:** 3.0  
+**Last Updated:** November 25, 2025
+**Version:** 3.1
 **Status:** ✅ **PRODUCTION READY - READY TO DEPLOY**

@@ -121,11 +121,14 @@ def _classify_history(
     """
     Classify policy execution history entries.
 
+    When filtering is enabled, prefers runs within CR window but falls back to most recent
+    run if no CR-window runs exist. This prevents >100% rates while still showing status.
+
     Args:
         entries: List of PolicyExecutionStatus objects for a specific device and policy
         cr_start_dt: Optional CR window start datetime
         cr_end_dt: Optional CR window end datetime
-        filter_to_cr_window: If True, only count executions within CR window (prevents >100% rates)
+        filter_to_cr_window: If True, deduplicates and prefers CR window runs (prevents >100% rates)
 
     Returns:
         Tuple of (completed_count, failed_count, pending_count, last_failure_time)
@@ -154,8 +157,14 @@ def _classify_history(
                 except Exception:
                     pass  # Skip entries with invalid timestamps
 
+    # FALLBACK: If no runs in CR window, use most recent run overall
+    # This prevents showing "pending" when policy ran outside window
+    # while still preventing >100% rates from multiple runs
+    if not filtered_entries and filter_to_cr_window and entries:
+        filtered_entries = entries[-1:]  # Use most recent run overall
+
     if not filtered_entries:
-        # No executions in CR window means policy didn't run (pending)
+        # Truly no executions at all
         pending = 1
         return completed, failed, pending, last_failure_time
 
